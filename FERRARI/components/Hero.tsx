@@ -43,7 +43,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenContact }) => {
       <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 flex-1 flex flex-col justify-center pt-[80px] sm:pt-[90px] md:pt-[100px] pb-8 sm:pb-10 md:pb-12 rounded-t-2xl sm:rounded-t-3xl">
         <div className="max-w-4xl mx-auto text-center w-full">
           {/* Main Headline - 3 lines with PLACE as center line */}
-          <h1 className="font-cursive font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight px-2 drop-shadow-lg" style={{ fontSize: 'clamp(2.2rem, 7.5vw, 5.625rem)' }}>
+          <h1 className="font-serif font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight px-2 drop-shadow-lg" style={{ fontSize: 'clamp(2.2rem, 7.5vw, 5.625rem)' }}>
             Everyone needs a
             <span className="block mt-0.5 sm:mt-1">PLACE</span>
             <span className="block mt-0.5 sm:mt-1">in Pittsburgh</span>
