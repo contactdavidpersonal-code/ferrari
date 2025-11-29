@@ -28,7 +28,7 @@ export const Footer: React.FC = () => {
       id="contact" 
       className="bg-primary text-white py-20"
       style={{
-        clipPath: 'polygon(6% 0%, 94% 0%, 100% 6%, 100% 100%, 0% 100%, 0% 6%)',
+        clipPath: 'polygon(2% 0%, 98% 0%, 100% 2%, 100% 100%, 0% 100%, 0% 2%)',
       }}
     >
       <div className="container mx-auto px-6">
