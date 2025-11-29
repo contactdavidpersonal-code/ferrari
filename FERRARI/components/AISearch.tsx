@@ -376,9 +376,15 @@ Be enthusiastic about Pittsburgh's market and Nicole's expertise.`
 
   return (
     <section data-section="custom-search" className="w-full min-h-screen bg-white">
-      <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-5 md:py-6">
+      <div className="max-w-[95%] xl:max-w-[98%] mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-5 md:py-6">
         {/* Chat Interface - Above Properties */}
-        <div className="relative bg-white shadow-xl border border-accent/30 mb-4 sm:mb-6 md:mb-8 rounded-xl sm:rounded-2xl overflow-hidden max-w-4xl mx-auto">
+        <div 
+          className="relative bg-white border border-accent/30 mb-4 sm:mb-6 md:mb-8 rounded-2xl sm:rounded-3xl overflow-hidden max-w-[95%] xl:max-w-[98%] mx-auto"
+          style={{
+            filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.088)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.066))',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.066), 0 0 60px rgba(0, 0, 0, 0.044), inset 0 0 20px rgba(255, 255, 255, 0.111), 0 4px 20px rgba(0, 0, 0, 0.056)',
+          }}
+        >
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent animate-pulse opacity-80"></div>
           {/* Chat Header */}
           <div className="p-3 sm:p-4 border-b border-accent/30 bg-primary">
@@ -388,7 +394,7 @@ Be enthusiastic about Pittsburgh's market and Nicole's expertise.`
           </div>
 
           {/* Chat Messages */}
-          <div ref={scrollRef} className="p-2 sm:p-3 overflow-y-auto space-y-2 sm:space-y-3" style={{ maxHeight: 'clamp(100px, 25vh, 200px)' }}>
+          <div ref={scrollRef} className="p-2 sm:p-3 overflow-y-auto space-y-2 sm:space-y-3" style={{ maxHeight: 'clamp(100px, 20vh, 200px)', minHeight: 'clamp(100px, 17.5vh, 175px)' }}>
             {messages.map((m, i) => (
               <div
                 key={i}
@@ -457,7 +463,13 @@ Be enthusiastic about Pittsburgh's market and Nicole's expertise.`
         </div>
 
         {/* Properties Section - Full Width */}
-        <div className="bg-white/95 backdrop-blur-sm shadow-lg border border-accent/20 p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl">
+        <div 
+          className="bg-white/95 backdrop-blur-sm border border-accent/20 p-3 sm:p-4 md:p-6 relative overflow-visible rounded-2xl sm:rounded-3xl"
+          style={{
+            filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.066)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.044))',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.056), 0 0 60px rgba(0, 0, 0, 0.034), inset 0 0 20px rgba(255, 255, 255, 0.088), 0 4px 20px rgba(0, 0, 0, 0.044)',
+          }}
+        >
           <div className="flex flex-col items-center mb-4 sm:mb-6">
             <div className="w-full flex items-center justify-between mb-3 sm:mb-4">
               <h2 className="font-serif text-primary text-center font-bold" style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)' }}>
@@ -485,11 +497,17 @@ Be enthusiastic about Pittsburgh's market and Nicole's expertise.`
             )}
           </div>
           
-          <div className="overflow-y-auto" style={{ maxHeight: 'calc(100vh - 400px)', minHeight: '300px' }}>
+          <div className="overflow-y-auto" style={{ maxHeight: 'calc(100vh - 350px)', minHeight: '780px' }}>
             {results.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4 items-stretch">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12 items-stretch">
                 {results.map((property) => (
-                  <div key={property.id} className="transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl h-full">
+                  <div 
+                    key={property.id} 
+                    className="transform transition-all duration-300 hover:scale-[1.03] h-full relative overflow-visible"
+                    style={{
+                      filter: 'drop-shadow(0 6px 20px rgba(0, 0, 0, 0.15)) drop-shadow(0 3px 10px rgba(0, 0, 0, 0.1))',
+                    }}
+                  >
                     <PropertyCard listing={property} onOpenQuickView={setQuickViewListing} />
                   </div>
                 ))}

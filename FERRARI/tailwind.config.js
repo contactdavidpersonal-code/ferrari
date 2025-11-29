@@ -78,6 +78,7 @@ export default {
         sans: ['Lato', 'sans-serif'],
         serif: ['Playfair Display', 'serif'],
         script: ['Great Vibes', 'cursive'],
+        cursive: ['Dancing Script', 'cursive'],
       },
     },
   },

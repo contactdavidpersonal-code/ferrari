@@ -29,7 +29,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenContact }) => {
       />
       
       {/* Subtle dark overlay for contrast */}
-      <div className="absolute inset-0 bg-black/25"></div>
+      <div className="absolute inset-0 bg-black/70"></div>
       
       {/* Subtle background pattern overlay */}
       <div className="absolute inset-0 opacity-[0.02]">
@@ -40,37 +40,19 @@ export const Hero: React.FC<HeroProps> = ({ onOpenContact }) => {
       </div>
       
       {/* Main Content Area - Compact spacing to fit all elements */}
-      <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 flex-1 flex flex-col justify-center pt-[80px] sm:pt-[90px] md:pt-[100px] pb-8 sm:pb-10 md:pb-12">
+      <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 flex-1 flex flex-col justify-center pt-[80px] sm:pt-[90px] md:pt-[100px] pb-8 sm:pb-10 md:pb-12 rounded-t-2xl sm:rounded-t-3xl">
         <div className="max-w-4xl mx-auto text-center w-full">
           {/* Main Headline - 3 lines with PLACE as center line */}
-          <h1 className="font-bold text-primary mb-2 sm:mb-3 md:mb-4 leading-tight px-2" style={{ fontSize: 'clamp(1.75rem, 6vw, 4.5rem)' }}>
+          <h1 className="font-cursive font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight px-2 drop-shadow-lg" style={{ fontSize: 'clamp(2.2rem, 7.5vw, 5.625rem)' }}>
             Everyone needs a
             <span className="block mt-0.5 sm:mt-1">PLACE</span>
             <span className="block mt-0.5 sm:mt-1">in Pittsburgh</span>
           </h1>
           
           {/* Subheadline - Fluid typography with clamp, smaller */}
-          <p className="text-black mb-2 sm:mb-3 max-w-2xl mx-auto leading-relaxed px-4" style={{ fontSize: 'clamp(0.75rem, 2vw, 1.125rem)' }}>
+          <p className="text-white mb-2 sm:mb-3 max-w-2xl mx-auto leading-relaxed px-4 drop-shadow-md" style={{ fontSize: 'clamp(0.75rem, 2vw, 1.125rem)' }}>
             Find your perfect Pittsburgh property with expert guidance from Nicole Marie Severson, your trusted eXp Realty agent.
           </p>
-          
-          {/* CTA Buttons - Fluid sizing with proper touch targets, smaller */}
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-center mb-2 sm:mb-3 px-4">
-            <button
-              onClick={scrollToProperties}
-              className="w-full sm:w-auto bg-primary text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 font-semibold hover:bg-primary/90 transition-all duration-300 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[44px]"
-              style={{ fontSize: 'clamp(0.8125rem, 1.8vw, 1rem)' }}
-            >
-              Find a Home
-            </button>
-            <button
-              onClick={onOpenContact}
-              className="w-full sm:w-auto bg-white text-primary border-2 border-primary px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 font-semibold hover:bg-primary hover:text-white transition-all duration-300 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[44px]"
-              style={{ fontSize: 'clamp(0.8125rem, 1.8vw, 1rem)' }}
-            >
-              Sell Your Home
-            </button>
-          </div>
           
           {/* Quick Links Grid - Smaller to fit in viewport */}
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3 max-w-3xl mx-auto px-2 sm:px-4 mb-2 sm:mb-2.5">
@@ -135,7 +117,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenContact }) => {
               aria-label="Scroll to properties"
             >
               <svg 
-                className="w-8 h-8 sm:w-8 sm:h-8 md:w-10 md:h-10 text-accent group-hover:scale-110 transition-transform duration-300 drop-shadow-lg"
+                className="w-8 h-8 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-lg"
                 style={{
                   animation: 'float 3s ease-in-out infinite'
                 }}

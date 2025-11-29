@@ -744,17 +744,42 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ listing, onOpenQuick
   };
 
   return (
-    <div className="bg-white border border-charcoal/10 overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_28px_rgba(0,0,0,0.12)] transition-shadow transition-transform duration-300 hover:-translate-y-0.5 will-change-transform flex flex-col group h-full">
+    <div 
+      className="bg-white border border-charcoal/10 overflow-hidden transition-all duration-300 hover:-translate-y-1 will-change-transform flex flex-col group h-full relative"
+      style={{
+        clipPath: 'polygon(6% 0%, 94% 0%, 100% 6%, 100% 94%, 94% 100%, 6% 100%, 0% 94%, 0% 6%)',
+        boxShadow: '0 0 25px rgba(0, 0, 0, 0.1), 0 0 50px rgba(0, 0, 0, 0.06), inset 0 0 15px rgba(255, 255, 255, 0.1), 0 4px 15px rgba(0, 0, 0, 0.08)',
+        border: '1px solid rgba(255, 255, 255, 0.25)',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = '0 0 40px rgba(0, 0, 0, 0.18), 0 0 80px rgba(0, 0, 0, 0.1), inset 0 0 25px rgba(255, 255, 255, 0.15), 0 8px 30px rgba(0, 0, 0, 0.15)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = '0 0 25px rgba(0, 0, 0, 0.1), 0 0 50px rgba(0, 0, 0, 0.06), inset 0 0 15px rgba(255, 255, 255, 0.1), 0 4px 15px rgba(0, 0, 0, 0.08)';
+      }}
+    >
       <div
         className="relative overflow-hidden cursor-pointer"
-        style={{ height: 'clamp(180px, 40vw, 240px)' }}
+        style={{ 
+          height: 'clamp(180px, 40vw, 240px)',
+          borderTopLeftRadius: '0.75rem',
+          borderTopRightRadius: '0.75rem',
+        }}
         onClick={() => {
           // Open the same big details modal as the "Learn more" button
           if (onOpenQuickView) onOpenQuickView(listing);
         }}
       >
         {listing.images && Array.isArray(listing.images) && listing.images.length > 0 ? (
-          <img src={listing.images[0]} alt={`View of ${listing.address}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" referrerPolicy="no-referrer" onError={(e)=>{ (e.currentTarget as HTMLImageElement).src = 'https://picsum.photos/seed/fallback/600/400'; }} />
+          <img 
+            src={listing.images[0]} 
+            alt={`View of ${listing.address}`} 
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
+            style={{ borderTopLeftRadius: '0.75rem', borderTopRightRadius: '0.75rem' }}
+            loading="lazy" 
+            referrerPolicy="no-referrer" 
+            onError={(e)=>{ (e.currentTarget as HTMLImageElement).src = 'https://picsum.photos/seed/fallback/600/400'; }} 
+          />
         ) : (
           <div className="w-full h-full bg-charcoal/5 flex items-center justify-center hover:bg-charcoal/10 transition-colors duration-300">
             <span className="text-charcoal/40" style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)' }}>🏠</span>
