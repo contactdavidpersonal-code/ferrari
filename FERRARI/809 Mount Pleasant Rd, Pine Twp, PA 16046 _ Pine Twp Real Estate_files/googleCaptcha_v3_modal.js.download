@@ -1,0 +1,647 @@
+// Production reCAPTCHA v3 implementation - Clean version
+var RecaptchaManager = {
+    siteKey: null,
+    initialized: false,
+    
+    // Initialize immediately regardless of DOM state
+    init: function() {
+        this.fetchSiteKey();
+    },
+    
+    startVerification: function() {
+        var self = this;
+        
+        // console.log('Starting reCAPTCHA verification...');
+        
+        // Check for existing verification first
+        if (this.checkExistingVerification()) {
+            // console.log('Found existing valid verification');
+            return;
+        }
+        
+        // Disable buttons while we initialize
+        this.setButtonStates(false);
+        
+        // Get site key from server
+        this.fetchSiteKey();
+    },
+    
+    verifyForFormToggle: function(buttonElement) {
+        var self = this;
+        
+        console.log('Button clicked - starting reCAPTCHA verification process...');
+
+        // Check for existing verification first
+        if (this.checkExistingVerification()) {
+            console.log('Found existing valid reCAPTCHA cookie - showing form immediately');
+            this.showFormAndEnableSubmit(buttonElement);
+            return;
+        }
+
+        // If not initialized yet, initialize and then verify
+        if (!this.siteKey) {
+            console.log('Site key not loaded yet - fetching configuration...');
+            this.fetchSiteKey(function() {
+                console.log('Site key loaded - executing reCAPTCHA...');
+                self.executeRecaptchaForForm(buttonElement);
+            });
+        } else {
+            console.log('Site key available - executing reCAPTCHA...');
+            this.executeRecaptchaForForm(buttonElement);
+        }
+    },
+    
+    executeRecaptchaForForm: function(buttonElement) {
+        var self = this;
+        
+        console.log('Waiting for reCAPTCHA to be ready...');
+
+        grecaptcha.ready(function() {
+            console.log('reCAPTCHA ready - executing with form_reveal action...');
+            grecaptcha.execute(self.siteKey, {action: 'form_reveal'})
+            .then(function(token) {
+                console.log('reCAPTCHA token received - verifying with server...');
+                self.verifyTokenForForm(token, buttonElement);
+            })
+            .catch(function(error) {
+                console.error('reCAPTCHA execution failed:', error);
+                buttonElement.prop('disabled', true).text('Security Check Failed');
+                self.showError('Security verification failed');
+            });
+        });
+    },
+
+    verifyTokenForForm: function(token, buttonElement) {
+        var self = this;
+
+        var baseUrl = this.getBaseUrl();
+        var endpointUrl = baseUrl + '/selectmodule.cfc';
+        
+        console.log('Sending token to server for verification...');
+
+        $.ajax({
+            type: "POST",
+            url: endpointUrl,
+            data: { 
+                method: 'getCaptcha', 
+                token: token,
+                action: 'form_reveal'
+            },
+            dataType: "json",
+            cache: false,
+            success: function(response) {
+                console.log('Server verification response received');
+                self.handleFormVerificationResponse(response, buttonElement);
+            },
+            error: function(xhr, status, error) {
+                console.error('reCAPTCHA verification failed:', error);
+                buttonElement.prop('disabled', true).text('Verification Failed');
+                self.showError('Security verification failed');
+            }
+        });
+    },
+
+    handleFormVerificationResponse: function(data, buttonElement) {
+        try {
+            var responseObj = (typeof data === 'string') ? JSON.parse(data) : data;
+            var captchaResult = (typeof responseObj === 'string') ? JSON.parse(responseObj) : responseObj;
+
+            var success = captchaResult.success || captchaResult.SUCCESS;
+            var score = parseFloat(captchaResult.score || captchaResult.SCORE || 0);
+            
+            console.log('reCAPTCHA verification result - Success:', success, 'Score:', score);
+
+            if (success && score >= 0.7) {
+                console.log('reCAPTCHA passed - showing form and enabling submit button');
+                // Set cookie for future use
+                document.cookie = "BHHSrecap=1; path=/; max-age=3600; secure; samesite=strict";
+                this.showFormAndEnableSubmit(buttonElement);
+            } else {
+                console.warn('reCAPTCHA verification failed or score too low');
+                buttonElement.prop('disabled', true).text('Security Check Failed');
+                this.showError('Security verification failed - please refresh the page to try again');
+            }
+
+        } catch (error) {
+            console.error('Error processing reCAPTCHA response:', error);
+            buttonElement.prop('disabled', true).text('Verification Error');
+            this.showError('Security verification error');
+        }
+    },
+
+    showFormAndEnableSubmit: function(buttonElement) {
+        console.log('Hiding button and showing contact form in modal');
+        
+        // Hide the original button and message div
+        buttonElement.hide();
+        $('#defaultMessageDiv').hide();
+
+        // Copy the default message to the form's comment field
+        var defaultMessage = $('#defaultmessage').val();
+        if (defaultMessage) {
+            $('#myComments').val(defaultMessage);
+        }
+
+        // Show the modal with the complete form
+        this.showModal();
+
+        // Enable the submit button
+        this.setButtonStates(true);
+
+        this.clearError();
+    },
+    
+    showModal: function() {
+        // Create modal backdrop if it doesn't exist
+        if ($('#contactModal').length === 0) {
+            var modalHTML = `
+                <div id="contactModal" class="contact-modal">
+                    <div class="modal-backdrop"></div>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Contact Information</h3>
+                            <span class="modal-close">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <div id="modalFormContainer"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('body').append(modalHTML);
+            
+            // Add close functionality
+            $('.modal-close').click(function() {
+                $('#contactModal').fadeOut(300);
+                // Move form back and hide it when modal closes
+                $('#contactformDiv').appendTo('body').hide();
+                // Show the original message area and button again
+                $('#defaultMessageDiv').show();
+                $('#cmdCaptchaCheck').show().prop('disabled', false).text('Send Message');
+            });
+            
+            $('.modal-backdrop').click(function() {
+                $('#contactModal').fadeOut(300);
+                // Move form back and hide it when modal closes
+                $('#contactformDiv').appendTo('body').hide();
+                // Show the original message area and button again
+                $('#defaultMessageDiv').show();
+                $('#cmdCaptchaCheck').show().prop('disabled', false).text('Send Message');
+            });
+            
+            // Prevent modal from closing when clicking inside the modal content
+            $('.modal-content').click(function(e) {
+                e.stopPropagation();
+            });
+            
+            // Close on Escape key
+            $(document).keyup(function(e) {
+                if (e.keyCode === 27) { // Escape key
+                    $('#contactModal').fadeOut(300);
+                    // Move form back and hide it when modal closes
+                    $('#contactformDiv').appendTo('body').hide();
+                    // Show the original message area and button again
+                    $('#defaultMessageDiv').show();
+                    $('#cmdCaptchaCheck').show().prop('disabled', false).text('Send Message');
+                }
+            });
+        }
+        
+        // Move the entire contact form div into the modal and make it visible
+        $('#contactformDiv').appendTo('#modalFormContainer').css('display', 'block');
+        
+        // Show the modal with fade effect
+        $('#contactModal').fadeIn(300);
+        
+        console.log('Modal should now be visible with form content');
+    },
+    
+    fetchSiteKey: function(callback) {
+        var self = this;
+        
+        var baseUrl = this.getBaseUrl();
+        var endpointUrl = baseUrl + '/selectmodule.cfc';
+        
+        // console.log('Fetching site key from:', endpointUrl);
+        
+        $.ajax({
+            type: "POST",
+            url: endpointUrl,
+            data: { 
+                method: 'getRecaptchaConfig'
+            },
+            dataType: "json",
+            cache: false,
+            success: function(response) {
+                // console.log('Raw reCAPTCHA config response:', response);
+                // console.log('Response type:', typeof response);
+                
+                // Handle ColdFusion's uppercase JSON keys
+                var success = response.success || response.SUCCESS;
+                var siteKey = response.siteKey || response.SITEKEY;
+                
+                // console.log('Parsed success:', success);
+                // console.log('Parsed siteKey:', siteKey);
+                
+                if (success && siteKey) {
+                    // console.log('Retrieved site key successfully:', siteKey);
+                    self.siteKey = siteKey;
+                    self.loadRecaptchaScript();
+                    
+                    // Call the callback if provided
+                    if (callback && typeof callback === 'function') {
+                        callback();
+                    }
+                } else {
+                    console.error('Failed to get reCAPTCHA configuration - success:', success, 'siteKey:', siteKey);
+                    self.setButtonStates(false);
+                    self.showError('Security verification unavailable');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Failed to fetch reCAPTCHA config:', error);
+                self.setButtonStates(false);
+                self.showError('Unable to initialize security verification');
+            }
+        });
+    },
+    
+    loadRecaptchaScript: function() {
+        var self = this;
+        
+        // Check if reCAPTCHA is already loaded
+        if (typeof grecaptcha !== 'undefined') {
+            // console.log('reCAPTCHA already loaded, ready for use');
+            return;
+        }
+        
+        // console.log('Loading reCAPTCHA script...');
+        var script = document.createElement('script');
+        script.src = 'https://www.google.com/recaptcha/api.js?render=' + this.siteKey;
+        script.onload = function() {
+            // console.log('reCAPTCHA script loaded successfully');
+        };
+        script.onerror = function() {
+            console.error('Failed to load reCAPTCHA script');
+            self.setButtonStates(false);
+            self.showError('Security verification failed to load');
+        };
+        document.head.appendChild(script);
+    },
+    
+    executeRecaptcha: function() {
+        var self = this;
+        
+        // console.log('Executing reCAPTCHA verification...');
+        
+        grecaptcha.ready(function() {
+            // console.log('reCAPTCHA ready, executing...');
+            
+            // Small delay to ensure client is fully initialized
+            setTimeout(function() {
+                self.attemptExecution(0);
+            }, 250);
+        });
+    },
+    
+    // Retry mechanism for reCAPTCHA execution
+    attemptExecution: function(retryCount) {
+        var self = this;
+        var maxRetries = 3;
+        
+        // console.log('Attempting reCAPTCHA execution, try:', retryCount + 1);
+        
+        grecaptcha.execute(self.siteKey, {action: 'page_load'})
+        .then(function(token) {
+            // console.log('reCAPTCHA token received successfully, verifying...');
+            self.verifyToken(token);
+        })
+        .catch(function(error) {
+            console.error('reCAPTCHA execution failed:', error.message || error);
+            
+            // Retry if we haven't exceeded max attempts
+            if (retryCount < maxRetries) {
+                // console.log('Retrying reCAPTCHA execution in 500ms...');
+                setTimeout(function() {
+                    self.attemptExecution(retryCount + 1);
+                }, 500);
+            } else {
+                console.error('Max retries exceeded for reCAPTCHA execution');
+                self.setButtonStates(false);
+                self.showError('Security verification failed');
+            }
+        });
+    },
+    
+    verifyToken: function(token) {
+        var self = this;
+        
+        var baseUrl = this.getBaseUrl();
+        var endpointUrl = baseUrl + '/selectmodule.cfc';
+        
+        // console.log('Verifying token with:', endpointUrl);
+        
+        $.ajax({
+            type: "POST",
+            url: endpointUrl,
+            data: { 
+                method: 'getCaptcha', 
+                token: token,
+                action: 'page_load'
+            },
+            dataType: "json",
+            cache: false,
+            timeout: 10000,
+            success: function(response) {
+                // console.log('reCAPTCHA verification response received:', response);
+                
+                // Check if there are error codes to help debug
+                if (response['error-codes'] && response['error-codes'].length > 0) {
+                    console.error('Google reCAPTCHA error codes:', response['error-codes']);
+                }
+                
+                self.handleVerificationResponse(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('reCAPTCHA verification failed:', status, error);
+                self.setButtonStates(false);
+                self.showError('Security verification failed - please refresh the page');
+            }
+        });
+    },
+    
+    handleVerificationResponse: function(data) {
+        try {
+            var responseObj = (typeof data === 'string') ? JSON.parse(data) : data;
+            var captchaResult = (typeof responseObj === 'string') ? JSON.parse(responseObj) : responseObj;
+            
+            // Handle ColdFusion's uppercase JSON keys
+            var success = captchaResult.success || captchaResult.SUCCESS;
+            var score = parseFloat(captchaResult.score || captchaResult.SCORE || 0);
+            
+            if (!success) {
+                console.warn('reCAPTCHA verification failed on server:', captchaResult);
+                this.setButtonStates(false);
+                this.showError('Security verification failed');
+                return;
+            }
+            
+            var scorePercentage = Math.round(score * 100);
+            var threshold = 70; // 0.7 * 100
+            
+            // console.log('reCAPTCHA score:', score, '(' + scorePercentage + '%)');
+            
+            if (scorePercentage >= threshold) {
+                // console.log('reCAPTCHA passed - enabling buttons');
+                document.cookie = "BHHSrecap=1; path=/; max-age=3600; secure; samesite=strict";
+                this.setButtonStates(true);
+                this.clearError();
+            } else {
+                // console.log('reCAPTCHA score too low - keeping buttons disabled');
+                document.cookie = "BHHSrecap=0; path=/; max-age=3600; secure; samesite=strict";
+                this.setButtonStates(false);
+                this.showError('Security check failed - please try refreshing the page');
+            }
+            
+        } catch (error) {
+            console.error('Error processing reCAPTCHA response:', error);
+            this.setButtonStates(false);
+            this.showError('Security verification error');
+        }
+    },
+    
+    setButtonStates: function(enabled) {
+        var buttonIds = ['cmdSubmitRecap', 'cmdEmailFriend', 'cmdCaptchaSubmit'];
+        
+        // console.log('Setting button states to:', enabled ? 'enabled' : 'disabled');
+        
+        buttonIds.forEach(function(buttonId) {
+            try {
+                var button = document.getElementById(buttonId);
+                if (button) {
+                    button.disabled = !enabled;
+                    if (enabled) {
+                        button.classList.remove('recaptcha-disabled');
+                        button.title = '';
+                        // console.log('Enabled button:', buttonId);
+                    } else {
+                        button.classList.add('recaptcha-disabled');
+                        button.title = 'Please wait for security verification...';
+                        // console.log('Disabled button:', buttonId);
+                    }
+                } else {
+                    // console.log('Button not found on this page:', buttonId);
+                }
+            } catch (error) {
+                console.log('Error setting button state for:', buttonId, error);
+            }
+        });
+    },
+    
+    showError: function(message) {
+        // Optional: Show error message to user
+        console.warn('reCAPTCHA Error:', message);
+        
+        // You could add a visual error indicator here
+        var errorElement = document.getElementById('recaptcha-error');
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+    },
+    
+    clearError: function() {
+        var errorElement = document.getElementById('recaptcha-error');
+        if (errorElement) {
+            errorElement.style.display = 'none';
+        }
+    },
+    
+    checkExistingVerification: function() {
+        var recapCookie = this.getCookie('BHHSrecap');
+        if (recapCookie === '1') {
+            // console.log('Found valid reCAPTCHA cookie - enabling buttons');
+            this.setButtonStates(true);
+            return true;
+        }
+        return false;
+    },
+    
+    getCookie: function(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    },
+    
+    // Get the correct base URL based on environment
+    getBaseUrl: function() {
+        var hostname = window.location.hostname;
+        var port = window.location.port;
+        var protocol = window.location.protocol;
+        
+        // Check if we're on localhost
+        if (hostname === 'localhost') {
+            // Use HTTP for localhost and include the bhhs_responsive folder
+            var baseUrl = 'http://localhost';
+            if (port && port !== '80') {
+                baseUrl += ':' + port;
+            }
+            baseUrl += '/bhhs_responsive';
+            return baseUrl;
+        } else {
+            // Production environment - use HTTPS and no folder
+            return 'https://' + window.location.host;
+        }
+    }
+};
+
+// Start initialization immediately when this script loads
+RecaptchaManager.init();
+
+// Add CSS for visual feedback and modal
+var style = document.createElement('style');
+style.textContent = `
+    .recaptcha-disabled {
+        opacity: 0.6;
+        cursor: not-allowed !important;
+    }
+    
+    #recaptcha-error {
+        display: none;
+        color: #d32f2f;
+        font-size: 14px;
+        margin: 10px 0;
+        padding: 8px;
+        border: 1px solid #d32f2f;
+        border-radius: 4px;
+        background-color: #ffebee;
+    }
+    
+    .contact-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+    }
+    
+    .modal-content {
+        position: fixed;
+        background-color: #fefefe;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0;
+        border: none;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+        animation: modalSlideIn 0.3s ease-out;
+    }
+    
+    @keyframes modalSlideIn {
+        from {
+            transform: translate(-50%, -50%) translateY(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translate(-50%, -50%) translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    .modal-header {
+        padding: 20px 25px 15px;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-header h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        color: #333;
+    }
+    
+    .modal-close {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        line-height: 1;
+    }
+    
+    .modal-close:hover,
+    .modal-close:focus {
+        color: #000;
+        text-decoration: none;
+    }
+    
+    .modal-body {
+        padding: 25px;
+    }
+    
+    #modalFormContainer .ip-group {
+        margin-bottom: 20px;
+    }
+    
+    #modalFormContainer label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #333;
+    }
+    
+    #modalFormContainer input,
+    #modalFormContainer select,
+    #modalFormContainer textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+    
+    #modalFormContainer input:focus,
+    #modalFormContainer select:focus,
+    #modalFormContainer textarea:focus {
+        outline: none;
+        border-color: #007cba;
+        box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.2);
+    }
+    
+    @media (max-width: 600px) {
+        .modal-content {
+            width: 95%;
+        }
+        
+        .modal-header,
+        .modal-body {
+            padding: 15px;
+        }
+    }
+`;
+document.head.appendChild(style);

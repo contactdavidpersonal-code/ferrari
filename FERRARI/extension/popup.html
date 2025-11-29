@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Add Listing</title>
+    <style>
+      body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;padding:12px;width:320px}
+      .row{margin:8px 0}
+      .btn{background:#552448;color:#fff;border:none;padding:8px 10px;cursor:pointer}
+      .btn[disabled]{opacity:.6;cursor:not-allowed}
+      .muted{color:#666;font-size:12px}
+      .ok{color:#0a0}
+      .err{color:#a00}
+      .kv{font-size:12px}
+    </style>
+  </head>
+  <body>
+    <div class="row"><strong>Add Listing</strong></div>
+    <div id="summary" class="row kv">No data extracted yet.</div>
+    <div class="row">
+      <button id="extractBtn" class="btn">Extract from this page</button>
+    </div>
+    <div class="row">
+      <button id="sendBtn" class="btn" disabled>Send to Site</button>
+    </div>
+    <div id="status" class="row muted"></div>
+    <script src="popup.js"></script>
+  </body>
+  </html>
+
+

@@ -1,0 +1,250 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 46 80% 28%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* 2025 Modern CSS Reset and Base Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Lato', sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+#root {
+  isolation: isolate;
+}
+
+/* Custom scrollbar for modern browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Focus styles for accessibility */
+*:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Hide scrollbar for horizontal scroll on mobile tabs */
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Touch action optimizations for mobile */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Safe area insets for iOS devices */
+    @supports (padding: max(0px)) {
+      .safe-top {
+        padding-top: max(env(safe-area-inset-top), 0px);
+      }
+      .safe-bottom {
+        padding-bottom: max(env(safe-area-inset-bottom), 0px);
+      }
+    }
+
+    /* Subtle float animation for lightning bolt */
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+/* Prevent flash of unstyled content */
+.loading {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.loaded {
+  opacity: 1;
+}
+
+/* shadcn UI animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translate(-50%, -48%);
+  }
+  to {
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes slideOutToTop {
+  from {
+    transform: translate(-50%, -50%);
+  }
+  to {
+    transform: translate(-50%, -48%);
+  }
+}
+
+.animate-in {
+  animation-duration: 150ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-out {
+  animation-duration: 150ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-in-0 {
+  animation-name: fadeIn;
+}
+
+.fade-out-0 {
+  animation-name: fadeOut;
+}
+
+.zoom-in-95 {
+  animation-name: zoomIn;
+}
+
+.zoom-out-95 {
+  animation-name: zoomOut;
+}
+
+.slide-in-from-left-1\/2 {
+  animation-name: slideInFromTop;
+}
+
+.slide-in-from-top-\[48\%\] {
+  animation-name: slideInFromTop;
+}
+
+.slide-out-to-left-1\/2 {
+  animation-name: slideOutToTop;
+}
+
+.slide-out-to-top-\[48\%\] {
+  animation-name: slideOutToTop;
+}

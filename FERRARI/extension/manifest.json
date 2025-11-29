@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "BHHS Add Listing",
+  "version": "0.1.0",
+  "description": "Extract listing details from Preferred Realty and BHHS PPM pages and send to your site for review.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": [
+    "https://www.thepreferredrealty.com/*",
+    "https://thepreferredrealty.com/*",
+    "https://www.bhhspreferredpropertymgt.com/*",
+    "https://bhhspreferredpropertymgt.com/*"
+  ],
+  "action": {
+    "default_title": "Add Listing",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "service_worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.thepreferredrealty.com/*",
+        "https://thepreferredrealty.com/*",
+        "https://www.bhhspreferredpropertymgt.com/*",
+        "https://bhhspreferredpropertymgt.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
+
+
