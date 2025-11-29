@@ -10,7 +10,10 @@ import { Listing } from '../types';
 const getAllProperties = async (): Promise<Listing[]> => {
   try {
     // Prefer server Neon source
-    const res = await fetch('/api/listings');
+    const res = await fetch('/api/listings').catch(err => {
+      console.log('📍 Listings API not available (development mode)');
+      return { ok: false } as Response;
+    });
     if (res.ok){
       const data = await res.json();
       const mapped: Listing[] = (data.listings||[]).map((r:any)=>({
@@ -38,8 +41,7 @@ const getAllProperties = async (): Promise<Listing[]> => {
     console.log('🏠 FeaturedListings - Database all:', all.length, 'properties');
     return all;
   } catch (error) {
-    console.error('Error loading properties from database:', error);
-    // Final fallback if service throws
+    // Silently fallback to local data
     const savedProperties = localStorage.getItem('managedProperties');
     if (savedProperties) {
       const parsed = JSON.parse(savedProperties);
