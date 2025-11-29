@@ -76,7 +76,7 @@ export default {
       },
       fontFamily: {
         sans: ['Lato', 'sans-serif'],
-        serif: ['Playfair Display', 'serif'],
+        serif: ['Cormorant Garamond', 'serif'],
         script: ['Great Vibes', 'cursive'],
         cursive: ['Dancing Script', 'cursive'],
       },
