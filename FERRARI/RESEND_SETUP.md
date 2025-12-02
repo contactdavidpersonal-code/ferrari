@@ -9,7 +9,8 @@ Add these to your `.env.local` file:
 RESEND_API_KEY=re_your_api_key_here
 
 # Email to receive lead notifications (Nicole's email)
-RESEND_TO_EMAIL=nicole@exppgh.com
+# NOTE: The recipient email is hardcoded to nicole@exppgh.com in the code
+# RESEND_TO_EMAIL is not used - all emails go to nicole@exppgh.com
 
 # From email address (must be verified domain in Resend)
 # For development, you can use onboarding@resend.dev
@@ -35,12 +36,9 @@ RESEND_FROM_EMAIL=onboarding@resend.dev
 
 This will work immediately for testing, but emails will have a "via resend.dev" notice.
 
-### 3. Set Nicole's Email
+### 3. Email Recipient
 
-Update the `RESEND_TO_EMAIL` with the actual email address where lead notifications should be sent:
-```bash
-RESEND_TO_EMAIL=nicole@exppgh.com
-```
+All lead notification emails are automatically sent to `nicole@exppgh.com` (hardcoded in the application). No configuration needed.
 
 ## How It Works
 

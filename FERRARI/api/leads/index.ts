@@ -175,10 +175,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             </html>
           `;
 
-          // Send email
+          // Send email - ALWAYS to nicole@exppgh.com
           await resend.emails.send({
           from: process.env.RESEND_FROM_EMAIL || 'leads@nmsrealtypa.homes',
-          to: process.env.RESEND_TO_EMAIL || 'nicole@exppgh.com',
+          to: 'nicole@exppgh.com',
           subject: `🏠 New ${source} Lead - ${name || email || 'Anonymous'}`,
           html: emailHtml,
           });
