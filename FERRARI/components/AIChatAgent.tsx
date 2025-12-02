@@ -480,34 +480,34 @@ const AIChatAgent: React.FC = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 flex items-center gap-3 bg-white text-primary rounded-full pl-4 pr-5 py-2 shadow-xl border border-primary/30 hover:shadow-2xl transition-all duration-300 z-50 overflow-visible"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-2 sm:gap-3 bg-white text-primary rounded-full pl-3 pr-4 sm:pl-4 sm:pr-5 py-2 shadow-xl border border-primary/30 hover:shadow-2xl transition-all duration-300 z-50 overflow-visible"
           aria-label="Open chat"
         >
-          <div className="relative shrink-0" style={{ width: '3.5rem', height: '3.5rem' }}>
+          <div className="relative shrink-0" style={{ width: '2.5rem', height: '2.5rem' }}>
             <img
               src="/nicole_waving_transparent.png"
               alt="Nicole waving avatar"
-              className="absolute -top-12 left-1/2 -translate-x-1/2 w-36 h-36 object-contain drop-shadow-[0_12px_18px_rgba(0,0,0,0.25)]"
+              className="absolute -top-8 sm:-top-12 left-1/2 -translate-x-1/2 w-24 h-24 sm:w-36 sm:h-36 object-contain drop-shadow-[0_12px_18px_rgba(0,0,0,0.25)]"
             />
           </div>
-          <span className="font-semibold text-base leading-tight pr-1">Need Help?</span>
+          <span className="font-semibold text-sm sm:text-base leading-tight pr-1 hidden sm:inline">Need Help?</span>
         </button>
       )}
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 w-[420px] h-[620px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 flex flex-col">
+        <div className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 w-full h-full sm:w-[420px] sm:h-[620px] sm:rounded-lg bg-white shadow-xl border border-gray-200 z-50 flex flex-col">
           {/* Chat Header */}
-          <div className="bg-cabernet text-white px-5 py-5 rounded-t-lg flex justify-between items-center gap-4">
-            <div className="flex items-center gap-3">
+          <div className="bg-cabernet text-white px-4 sm:px-5 py-4 sm:py-5 sm:rounded-t-lg flex justify-between items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
               <img
                 src="/nicole_animated.png"
                 alt="Nicole's assistant avatar"
-                className="w-12 h-12 rounded-full border border-white/40 object-cover shadow-lg"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/40 object-cover shadow-lg shrink-0"
               />
-              <div>
-                <h3 className="font-semibold">{CHAT_HEADER_TITLE}</h3>
-                <p className="text-sm opacity-90">{CHAT_HEADER_SUBTITLE}</p>
+              <div className="min-w-0">
+                <h3 className="font-semibold text-sm sm:text-base truncate">{CHAT_HEADER_TITLE}</h3>
+                <p className="text-xs sm:text-sm opacity-90 truncate">{CHAT_HEADER_SUBTITLE}</p>
               </div>
             </div>
             <button
@@ -522,26 +522,26 @@ const AIChatAgent: React.FC = () => {
           </div>
 
           {/* Compliance strip */}
-          <div className="px-4 pt-3 pb-4 text-[11px] text-white/90 bg-cabernet/90">
-            <div>{AI_DISCLOSURE_BANNER}</div>
-            <div className="opacity-90">{COMPLIANCE_SHORT}</div>
+          <div className="px-3 sm:px-4 pt-2 sm:pt-3 pb-3 sm:pb-4 text-[10px] sm:text-[11px] text-white/90 bg-cabernet/90">
+            <div className="leading-tight">{AI_DISCLOSURE_BANNER}</div>
+            <div className="opacity-90 leading-tight mt-1">{COMPLIANCE_SHORT}</div>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 pt-6 space-y-3">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 pt-4 sm:pt-6 space-y-2 sm:space-y-3">
             {messages.map((message) => (
               <div
                 key={message.id}
                 className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-xs px-3 py-2 rounded-lg ${
+                  className={`max-w-[85%] sm:max-w-xs px-3 py-2 rounded-lg ${
                     message.isUser
                       ? 'bg-cabernet text-white'
                       : 'bg-gray-100 text-gray-800'
                   }`}
                 >
-                  <p className="text-sm">{message.text}</p>
+                  <p className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
                 </div>
               </div>
             ))}
@@ -559,13 +559,13 @@ const AIChatAgent: React.FC = () => {
           </div>
 
           {/* Footer compliance + links (collapsible) */}
-          <div className="px-4 pb-2 text-[10px] text-charcoal">
+          <div className="px-3 sm:px-4 pb-2 text-[9px] sm:text-[10px] text-charcoal">
             <button
               onClick={() => setShowDisclosures(v => !v)}
               className="w-full text-left py-2 flex items-center justify-between border-t border-gray-200"
             >
-              <span className="font-semibold">Disclosures & Links</span>
-              <svg className={`w-4 h-4 transition-transform ${showDisclosures ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd"/></svg>
+              <span className="font-semibold text-xs sm:text-[10px]">Disclosures & Links</span>
+              <svg className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform ${showDisclosures ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd"/></svg>
             </button>
             {showDisclosures && (
               <div className="mt-2 space-y-1">
@@ -595,14 +595,12 @@ const AIChatAgent: React.FC = () => {
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Ask about properties or share your phone number..."
-                className="flex-1 px-3 py-2.5 sm:py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent min-h-[44px]"
-                style={{ fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)' }}
+                className="flex-1 px-3 py-2.5 sm:py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent min-h-[44px] text-sm sm:text-base"
               />
               <button
                 onClick={handleSendMessage}
                 disabled={!inputText.trim()}
-                className="bg-primary text-white px-4 sm:px-5 py-2.5 sm:py-2 rounded-md hover:bg-primary/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors min-h-[44px] min-w-[60px]"
-                style={{ fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)' }}
+                className="bg-primary text-white px-4 sm:px-5 py-2.5 sm:py-2 rounded-md hover:bg-primary/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors min-h-[44px] min-w-[60px] text-sm sm:text-base"
               >
                 Send
               </button>
