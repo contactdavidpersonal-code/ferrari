@@ -230,42 +230,79 @@ const AIChatAgent: React.FC = () => {
     // Check for phone number
     const phoneRegex = /(\+?1[-.\s]?)?\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})/;
     if (phoneRegex.test(userMessage)) {
-      // Save lead from AI chat
-      const savedLeads = localStorage.getItem('leads');
-      const existingLeads = savedLeads ? JSON.parse(savedLeads) : [];
-      
       const phoneMatch = userMessage.match(phoneRegex);
-      const phoneNumber = phoneMatch ? phoneMatch[0] : '';
+      const phoneNumber = phoneMatch ? phoneMatch[0].replace(/[-.\s()]/g, '') : '';
       
-      const newLead = {
-        id: Math.max(...existingLeads.map((l: any) => l.id || 0), 0) + 1,
-        name: 'AI Chat User', // We don't have name from AI chat
-        email: '', // We don't have email from AI chat
-        phone: phoneNumber,
-        source: 'AI Chat' as const,
-        interest: 'General Inquiry' as const,
-        status: 'New' as const,
-        priority: 'Medium' as const,
-        notes: `Phone number captured from AI chat. User message: "${userMessage}"`,
-        noteTimeline: [{
-          id: Date.now().toString(),
-          content: `Phone number captured from AI chat.\n\nUser message: "${userMessage}"\nPhone: ${phoneNumber}`,
-          createdAt: new Date().toISOString(),
-          author: 'System',
-          type: 'General' as const,
-          isImportant: true
-        }],
-        communicationHistory: [],
-        propertyTypes: [],
-        interestedProperties: [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      
-      const updatedLeads = [...existingLeads, newLead];
-      localStorage.setItem('leads', JSON.stringify(updatedLeads));
+      // Save lead to database and send email via API
+      try {
+        const leadData = {
+          name: 'AI Chat User',
+          email: '',
+          phone: phoneNumber,
+          message: `Phone number captured from AI chat. User message: "${userMessage}"`,
+          source: 'AI Chat',
+          conversationHistory: messages.map(m => ({ 
+            role: m.isUser ? 'user' : 'assistant', 
+            text: m.text 
+          }))
+        };
+
+        // Save to database and send email (consolidated endpoint)
+        fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(leadData)
+        }).then(response => {
+          if (response.ok) {
+            console.log('✅ Lead captured and email sent to nicole@exppgh.com');
+          }
+        }).catch(error => {
+          console.error('❌ Failed to capture lead:', error);
+        });
+      } catch (error) {
+        console.error('❌ Failed to capture lead:', error);
+      }
       
       return PHONE_CAPTURED_CONFIRMATION;
+    }
+    
+    // Check for email address
+    const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/;
+    if (emailRegex.test(userMessage)) {
+      const emailMatch = userMessage.match(emailRegex);
+      const emailAddress = emailMatch ? emailMatch[1] : '';
+      
+      // Save lead to database and send email via API
+      try {
+        const leadData = {
+          name: 'AI Chat User',
+          email: emailAddress,
+          phone: '',
+          message: `Email address captured from AI chat. User message: "${userMessage}"`,
+          source: 'AI Chat',
+          conversationHistory: messages.map(m => ({ 
+            role: m.isUser ? 'user' : 'assistant', 
+            text: m.text 
+          }))
+        };
+
+        // Save to database and send email (consolidated endpoint)
+        fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(leadData)
+        }).then(response => {
+          if (response.ok) {
+            console.log('✅ Lead captured and email sent to nicole@exppgh.com');
+          }
+        }).catch(error => {
+          console.error('❌ Failed to capture lead:', error);
+        });
+      } catch (error) {
+        console.error('❌ Failed to capture lead:', error);
+      }
+      
+      return "Perfect! I've got your email address. Nicole will reach out to you soon at that address. Is there anything specific about Pittsburgh properties you'd like to know while you wait?";
     }
     
     // Check for price inquiries
