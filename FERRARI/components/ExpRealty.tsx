@@ -123,34 +123,27 @@ export const ExpRealty: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        console.log('Fetching Instagram posts from /api/instagram');
         const response = await fetch('/api/instagram');
-        console.log('Instagram API response status:', response.status);
         
         // Check if response is HTML (404 page) - means API route not available
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('text/html')) {
-          console.log('API route not available, using mock data for development');
-          // Keep mock data, already set
+          // Keep mock data for development
           return;
         }
         
         if (!response.ok) {
-          const errorText = await response.text();
-          console.error('Instagram API error response:', errorText);
           // Keep mock data, already set
           return;
         }
         
         const data = await response.json();
-        console.log('Instagram API data received:', data);
         // Only update if we got real data
         if (data.posts && data.posts.length > 0) {
           setPosts(data.posts);
         }
       } catch (err: any) {
-        console.error('Error loading Instagram feed, using mock data:', err);
-        // Keep mock data, already set
+        // Silently use mock data in development
       }
     };
 
