@@ -4,6 +4,7 @@ import { Listing } from '../types';
 import { PropertyCard } from './ListingCard';
 import ContactLeadModal from './ContactLeadModal';
 import { PropertyQuickViewModal } from './PropertyQuickViewModal';
+import { useMortgageRates } from '../hooks/useMortgageRates';
 
 type ChatMessage = { role: 'assistant' | 'user'; text: string };
 
@@ -34,6 +35,7 @@ const AISearch: React.FC = () => {
   const [quickViewListing, setQuickViewListing] = useState<Listing | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const { rates } = useMortgageRates();
 
   useEffect(() => {
     // Auto-scroll to bottom when messages change
@@ -375,16 +377,42 @@ Be enthusiastic about Pittsburgh's market and Nicole's expertise.`
   };
 
   return (
-    <section data-section="custom-search" className="w-full min-h-screen bg-white">
-      <div className="max-w-[95%] xl:max-w-[98%] mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-5 md:py-6">
-        {/* Chat Interface - Above Properties */}
-        <div 
-          className="relative bg-white border border-accent/30 mb-4 sm:mb-6 md:mb-8 rounded-2xl sm:rounded-3xl overflow-hidden max-w-[95%] xl:max-w-[98%] mx-auto"
+    <section data-section="custom-search" className="w-full min-h-screen">
+      {/* AI Chat Section with onyx background */}
+      <div className="relative pt-16 pb-12 overflow-hidden">
+        {/* Onyx black background */}
+        <div className="absolute inset-0 bg-[#0f0f0f]" />
+        {/* Subtle texture overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
           style={{
-            filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.088)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.066))',
-            boxShadow: '0 0 30px rgba(0, 0, 0, 0.066), 0 0 60px rgba(0, 0, 0, 0.044), inset 0 0 20px rgba(255, 255, 255, 0.111), 0 4px 20px rgba(0, 0, 0, 0.056)',
+            backgroundImage: `
+              radial-gradient(circle at 0% 0%, rgba(255,255,255,0.06), transparent 50%),
+              radial-gradient(circle at 100% 100%, rgba(214,175,104,0.12), transparent 50%),
+              radial-gradient(circle at 1px 1px, rgba(255,255,255,0.08) 1px, transparent 0)
+            `,
+            backgroundSize: '900px 900px, 700px 700px, 20px 20px',
+            opacity: 1,
           }}
-        >
+        />
+
+        <div className="relative z-10 max-w-[98%] xl:max-w-[99%] mx-auto px-2 sm:px-3 md:px-4 lg:px-6">
+          {/* Section Header */}
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-white drop-shadow-lg mb-3">AI-Powered Property Search</h2>
+            <p className="text-white/80 max-w-2xl mx-auto text-base">
+              Tell our AI assistant what you're looking for and get personalized property recommendations instantly.
+            </p>
+          </div>
+
+          {/* Chat Interface */}
+          <div 
+            className="relative bg-white/95 backdrop-blur-sm border border-accent/30 rounded-2xl sm:rounded-3xl overflow-hidden max-w-4xl mx-auto"
+            style={{
+              filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.088)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.066))',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.066), 0 0 60px rgba(0, 0, 0, 0.044), inset 0 0 20px rgba(255, 255, 255, 0.111), 0 4px 20px rgba(0, 0, 0, 0.056)',
+            }}
+          >
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent animate-pulse opacity-80"></div>
           {/* Chat Header */}
           <div className="p-3 sm:p-4 border-b border-accent/30 bg-primary">
@@ -461,22 +489,57 @@ Be enthusiastic about Pittsburgh's market and Nicole's expertise.`
             
           </div>
         </div>
+        </div>
+      </div>
 
-        {/* Properties Section - Full Width */}
-        <div 
-          className="bg-white/95 backdrop-blur-sm border border-accent/20 p-3 sm:p-4 md:p-6 relative overflow-visible rounded-2xl sm:rounded-3xl"
-          style={{
-            filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.066)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.044))',
-            boxShadow: '0 0 30px rgba(0, 0, 0, 0.056), 0 0 60px rgba(0, 0, 0, 0.034), inset 0 0 20px rgba(255, 255, 255, 0.088), 0 4px 20px rgba(0, 0, 0, 0.044)',
-          }}
-        >
+      {/* Properties Section - White background */}
+      <div className="bg-white py-12 sm:py-16">
+        <div className="container mx-auto px-3 sm:px-4 md:px-6">
+          <div 
+            className="bg-white/95 backdrop-blur-sm border border-accent/20 p-4 sm:p-6 md:p-8 relative overflow-visible rounded-2xl sm:rounded-3xl"
+            style={{
+              filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.066)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.044))',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.056), 0 0 60px rgba(0, 0, 0, 0.034), inset 0 0 20px rgba(255, 255, 255, 0.088), 0 4px 20px rgba(0, 0, 0, 0.044)',
+            }}
+          >
           <div className="flex flex-col items-center mb-4 sm:mb-6">
-            <div className="w-full flex items-center justify-between mb-3 sm:mb-4">
-              <h2 className="font-serif text-primary text-center font-bold" style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)' }}>
-                {hasAISearched ? 'Matching Properties' : 'All Properties'}
-              </h2>
+            <div className="w-full flex flex-col gap-3 sm:gap-2 sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4">
+              <div className="flex flex-col items-center text-center gap-2 flex-1">
+                <h2 className="font-serif text-primary font-bold" style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)' }}>
+                  {hasAISearched ? 'Matching Properties' : 'All Properties'}
+                </h2>
+                {rates && (
+                  <div
+                    className="flex flex-col items-center gap-2 rounded-2xl border border-primary/10 bg-white/90 px-6 sm:px-8 md:px-10 py-3 shadow-sm"
+                    title={`Updated ${rates.lastUpdated}`}
+                  >
+                    <span className="text-[0.6rem] uppercase tracking-[0.35em] text-primary/60 font-medium">
+                      Current Mortgage Rates
+                    </span>
+                    <div className="flex items-center gap-4 sm:gap-6">
+                      <div className="flex flex-col items-center">
+                        <span className="text-lg sm:text-xl font-bold text-primary">{rates.thirtyYear}%</span>
+                        <span className="text-[0.65rem] uppercase tracking-wide text-primary/50">30-Year Fixed</span>
+                      </div>
+                      <div className="w-px h-8 bg-primary/15"></div>
+                      <div className="flex flex-col items-center">
+                        <span className="text-lg sm:text-xl font-bold text-primary">{rates.fifteenYear}%</span>
+                        <span className="text-[0.65rem] uppercase tracking-wide text-primary/50">15-Year Fixed</span>
+                      </div>
+                      <div className="w-px h-8 bg-primary/15"></div>
+                      <div className="flex flex-col items-center">
+                        <span className="text-lg sm:text-xl font-bold text-primary">{rates.fiveYearArm}%</span>
+                        <span className="text-[0.65rem] uppercase tracking-wide text-primary/50">5/1 ARM</span>
+                      </div>
+                    </div>
+                    <span className="text-[0.55rem] uppercase tracking-[0.2em] text-primary/40">
+                      Updated {rates.lastUpdated}
+                    </span>
+                  </div>
+                )}
+              </div>
               {results.length > 0 ? (
-                <span className="bg-gradient-to-r from-accent to-accent-light text-white px-3 sm:px-4 py-1.5 sm:py-2 font-semibold shadow-md rounded-lg" style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
+                <span className="self-start sm:self-auto bg-gradient-to-r from-accent to-accent-light text-white px-3 sm:px-4 py-1.5 sm:py-2 font-semibold shadow-md rounded-lg" style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
                   {results.length}
                 </span>
               ) : (
@@ -495,11 +558,18 @@ Be enthusiastic about Pittsburgh's market and Nicole's expertise.`
                 Show All Properties
               </button>
             )}
+            <div className="w-full bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-900 shadow-sm">
+              <p className="font-semibold mb-1">Live listings coming soon</p>
+              <p>
+                Current properties are sample data while the IDX/MLS feed is finalized. Feel free to browse the experience,
+                reach out to Nicole for real inventory, or explore the rest of the site in the meantime.
+              </p>
+            </div>
           </div>
           
-          <div className="overflow-y-auto" style={{ maxHeight: 'calc(100vh - 350px)', minHeight: '780px' }}>
+          <div className="overflow-y-auto px-3 sm:px-4 md:px-5 lg:px-6" style={{ maxHeight: 'calc(100vh - 350px)', minHeight: '780px' }}>
             {results.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12 items-stretch">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-10 items-stretch">
                 {results.map((property) => (
                   <div 
                     key={property.id} 
@@ -524,6 +594,7 @@ Be enthusiastic about Pittsburgh's market and Nicole's expertise.`
               </div>
             )}
           </div>
+        </div>
         </div>
       </div>
       <PropertyQuickViewModal

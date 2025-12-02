@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TwitterIcon, FacebookIcon, InstagramIcon } from '../constants';
+import { FacebookIcon, InstagramIcon } from '../constants';
 
 export const Footer: React.FC = () => {
   const news = [
@@ -24,7 +24,14 @@ export const Footer: React.FC = () => {
   ];
 
   return (
-    <footer id="contact" className="bg-primary text-white py-20">
+    <footer
+      id="contact"
+      className="bg-primary text-white py-20"
+      style={{
+        clipPath: 'polygon(4% 0%, 96% 0%, 100% 6%, 100% 100%, 0% 100%, 0% 6%)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+      }}
+    >
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Contact Info & Socials */}
@@ -37,8 +44,8 @@ export const Footer: React.FC = () => {
             {/* Agent & Brokerage Info */}
             <div className="space-y-3 mb-8">
               <p className="text-lg font-semibold text-white">Nicole Marie Severson</p>
-              <p className="text-gray-300"><span className="font-semibold">Direct:</span> <a href="tel:412-555-0199" className="hover:text-cream">(412) 555-0199</a></p>
-              <p className="text-gray-300"><span className="font-semibold">Email:</span> <a href="mailto:nicole.severson@exprealty.com" className="hover:text-cream">nicole.severson@exprealty.com</a></p>
+              <p className="text-gray-300"><span className="font-semibold">Direct:</span> <a href="tel:510-313-3291" className="hover:text-cream">(510) 313-3291</a></p>
+              <p className="text-gray-300"><span className="font-semibold">Email:</span> <a href="mailto:nicole@exppgh.com" className="hover:text-cream">nicole@exppgh.com</a></p>
             </div>
             <div className="mb-8 border-t border-white/20 pt-6">
                 <p className="text-2xl font-bold text-white">eXp</p>
@@ -48,7 +55,6 @@ export const Footer: React.FC = () => {
             <div className="flex space-x-4">
               <a href="#" aria-label="Facebook" className="text-gray-300 hover:text-white transition-colors"><FacebookIcon className="h-6 w-6 fill-current"/></a>
               <a href="#" aria-label="Instagram" className="text-gray-300 hover:text-white transition-colors"><InstagramIcon className="h-6 w-6 fill-current"/></a>
-              <a href="#" aria-label="Twitter" className="text-gray-300 hover:text-white transition-colors"><TwitterIcon className="h-6 w-6 fill-current"/></a>
             </div>
           </div>
           
@@ -69,13 +75,38 @@ export const Footer: React.FC = () => {
           </div>
         </div>
         <div className="border-t border-white/20 mt-12 pt-6 text-center text-gray-300 text-sm space-y-2">
-          <p>Nicole Marie Severson is a Licensed Real Estate Salesperson with eXp Realty in Pittsburgh, PA.</p>
-          <p>&copy; {new Date().getFullYear()} eXp Realty, LLC. Each office is independently owned and operated. Equal Housing Opportunity.</p>
-          <p className="space-x-4">
+          <p>Nicole Marie Severson is a Licensed Realtor® with eXp Realty in Pittsburgh, PA (West Penn MLS).</p>
+          <p>
+            &copy; {new Date().getFullYear()} eXp Realty, LLC. Each office is independently owned and operated. Equal Housing
+            Opportunity • <a href="/fair-housing" className="underline hover:text-white">Fair Housing Statement</a>.
+          </p>
+          <p className="text-xs text-gray-400">
+            ADA / WCAG Support:{' '}
+            <a href="mailto:nicole@exppgh.com" className="underline hover:text-white">nicole@exppgh.com</a> • (510) 313-3291
+          </p>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs sm:text-sm">
             <a href="/privacy" className="underline hover:text-white">Privacy Policy</a>
             <a href="/terms" className="underline hover:text-white">Terms of Use</a>
+            <a href="/cookies" className="underline hover:text-white">Cookie Policy</a>
+            <a href="/accessibility" className="underline hover:text-white">Accessibility</a>
+            <a href="/dmca" className="underline hover:text-white">DMCA</a>
+            <a href="/privacy#do-not-sell" className="underline hover:text-white">Do Not Sell My Info</a>
+            <a href="https://www.dos.pa.gov/ProfessionalLicensing/BoardsCommissions/RealEstateCommission/Documents/Consumer-Notice-Residential.pdf" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">
+              PA Consumer Notice
+            </a>
             <a href="/nms-admin" className="underline hover:text-white">NMS</a>
-          </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.dispatchEvent(new Event('open-cookie-preferences'));
+              }
+            }}
+            className="text-xs underline hover:text-white"
+          >
+            Cookie Preferences
+          </button>
         </div>
       </div>
     </footer>

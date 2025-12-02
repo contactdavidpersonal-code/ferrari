@@ -428,7 +428,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ listing, onOpenQuick
             </div>
             <div class="agent-info">
               <div class="agent-name">Nicole Marie Severson</div>
-              <div>Licensed Real Estate Agent</div>
+              <div>Licensed Realtor</div>
               <div>Pittsburgh, Pennsylvania</div>
             </div>
           </div>
@@ -504,15 +504,15 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ listing, onOpenQuick
               <div class="contact-info">
                 <div class="contact-item">
                   <strong>Nicole Marie Severson</strong>
-                  Licensed Real Estate Agent<br>
+                  Licensed Realtor<br>
                   eXp Realty<br>
                   Pittsburgh, PA
                 </div>
                 <div class="contact-item">
                   <strong>Phone</strong>
-                  (412) 555-0123<br>
+                  (510) 313-3291<br>
                   <strong>Email</strong>
-                  nicole@preferredrealty.com
+                  nicole@exppgh.com
                 </div>
                 <div class="contact-item">
                   <strong>Office</strong>
@@ -601,11 +601,11 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ listing, onOpenQuick
 
     // Helper function to create a stat item
     const createStat = (icon: React.ReactNode, text: string) => (
-      <div className="flex items-center space-x-2 py-1">
+      <div className="flex items-center space-x-1.5 py-0.5">
         <div className="flex-shrink-0">
           {icon}
               </div>
-        <span className={textClasses} style={{ fontSize: '13px', lineHeight: '1.4' }}>{text}</span>
+        <span className={textClasses} style={{ fontSize: '12px', lineHeight: '1.3' }}>{text}</span>
               </div>
     );
 
@@ -761,7 +761,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ listing, onOpenQuick
       <div
         className="relative overflow-hidden cursor-pointer"
         style={{ 
-          height: 'clamp(180px, 40vw, 240px)',
+          height: 'clamp(160px, 35vw, 220px)',
           borderTopLeftRadius: '0.75rem',
           borderTopRightRadius: '0.75rem',
         }}
@@ -802,13 +802,13 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ listing, onOpenQuick
           </span>
         )}
       </div>
-      <div className="p-3 sm:p-4 md:p-6 flex flex-col flex-grow">
-        <div className="mb-2 sm:mb-3">
-          <p className="font-serif font-bold text-charcoal" style={{ fontSize: 'clamp(1.125rem, 3vw, 1.875rem)' }}>{formatter.format(listing.price)}</p>
-          <p className="text-charcoal-light mt-1" style={{ fontSize: 'clamp(0.75rem, 1.8vw, 0.9375rem)' }}>{listing.address}, {listing.city}</p>
+      <div className="p-2 sm:p-3 md:p-4 flex flex-col flex-grow">
+        <div className="mb-1.5 sm:mb-2">
+          <p className="font-serif font-bold text-charcoal" style={{ fontSize: 'clamp(1rem, 2.5vw, 1.625rem)' }}>{formatter.format(listing.price)}</p>
+          <p className="text-charcoal-light mt-0.5" style={{ fontSize: 'clamp(0.7rem, 1.6vw, 0.875rem)' }}>{listing.address}, {listing.city}</p>
         </div>
-        <div className="border-t border-charcoal/10 pt-2 sm:pt-3 md:pt-4">
-          <div className="grid grid-cols-2 gap-2 sm:gap-3 text-charcoal" style={{ fontSize: 'clamp(0.75rem, 1.8vw, 0.875rem)' }}>
+        <div className="border-t border-charcoal/10 pt-1.5 sm:pt-2 md:pt-3">
+          <div className="grid grid-cols-2 gap-1.5 sm:gap-2 text-charcoal" style={{ fontSize: 'clamp(0.7rem, 1.6vw, 0.8125rem)' }}>
           {renderStats()}
           </div>
         </div>
@@ -833,8 +833,8 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ listing, onOpenQuick
           
           if (displayFeatures.length > 0) {
             return (
-              <div className="mt-2 sm:mt-3 md:mt-4">
-                <div className="flex flex-wrap gap-1">
+              <div className="mt-1.5 sm:mt-2 md:mt-3">
+                <div className="flex flex-wrap gap-0.5 sm:gap-1">
                   {displayFeatures.map((feature, index) => (
                     <span key={index} className="bg-gray-100 text-gray-600 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.75rem)' }}>
                       {feature.length > 20 ? `${feature.substring(0, 20)}...` : feature}
@@ -852,7 +852,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ listing, onOpenQuick
           return null;
         })()}
         
-        <div className="mt-auto pt-3 sm:pt-4 flex flex-col gap-2">
+        <div className="mt-auto pt-2 sm:pt-3 flex flex-col gap-1.5">
           <button
             onClick={() => {
               console.log('Learn more clicked, onOpenQuickView:', !!onOpenQuickView);
@@ -862,21 +862,28 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ listing, onOpenQuick
                 console.log('No onOpenQuickView prop provided');
               }
             }}
-            className="text-primary border border-charcoal/20 px-4 sm:px-5 py-2 hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary/40 font-semibold tracking-wide uppercase transition-colors duration-200 min-h-[44px]"
-            style={{ fontSize: 'clamp(0.75rem, 1.8vw, 0.875rem)' }}
+            className="text-primary border border-charcoal/20 px-3 sm:px-4 py-1.5 hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary/40 font-semibold tracking-wide uppercase transition-colors duration-200 min-h-[40px]"
+            style={{ fontSize: 'clamp(0.7rem, 1.6vw, 0.8125rem)' }}
           >
             Learn more about this opportunity
           </button>
           {listing.virtualTour && (
             <button
               onClick={() => window.open(listing.virtualTour, '_blank')}
-              className="text-charcoal border border-charcoal/20 px-4 sm:px-5 py-2 hover:bg-charcoal hover:text-white focus:outline-none focus:ring-2 focus:ring-charcoal/30 flex items-center justify-center gap-2 font-semibold tracking-wide uppercase transition-colors duration-200 min-h-[44px]"
-              style={{ fontSize: 'clamp(0.75rem, 1.8vw, 0.875rem)' }}
+              className="text-charcoal border border-charcoal/20 px-3 sm:px-4 py-1.5 hover:bg-charcoal hover:text-white focus:outline-none focus:ring-2 focus:ring-charcoal/30 flex items-center justify-center gap-2 font-semibold tracking-wide uppercase transition-colors duration-200 min-h-[40px]"
+              style={{ fontSize: 'clamp(0.7rem, 1.6vw, 0.8125rem)' }}
             >
               🏠 View Virtual Tour
             </button>
           )}
         </div>
+      </div>
+
+      <div className="px-3 sm:px-4 pb-3">
+        <p className="text-[10px] text-charcoal/60 leading-relaxed">
+          Data courtesy of West Penn Multi-List, Inc. Information deemed reliable but not guaranteed. For full legal
+          notices see <a href="/terms" className="underline">Terms of Use</a> and <a href="/fair-housing" className="underline">Fair Housing Statement</a>.
+        </p>
       </div>
       
     </div>

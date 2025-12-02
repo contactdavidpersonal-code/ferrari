@@ -89,44 +89,67 @@ export const RentalListings: React.FC = () => {
     );
   }
 
+  // Card styling matching hero quick-action cards
+  const statCardClass =
+    'group relative overflow-hidden rounded-[24px] border border-white/50 bg-gradient-to-br from-white/45 via-white/25 to-white/10 backdrop-blur-2xl p-6 shadow-[0_22px_60px_rgba(0,0,0,0.18)] hover:shadow-[0_34px_85px_rgba(0,0,0,0.28)] transition-all duration-300 hover:-translate-y-1.5 text-center';
+
   return (
     <>
       {/* Rental Statistics Section */}
-      <section id="rental-stats" className="pt-32 pb-20 bg-cream">
-        <div className="container mx-auto px-6">
+      <section id="rental-stats" className="relative pt-32 pb-20 overflow-hidden">
+        {/* Onyx black background */}
+        <div className="absolute inset-0 bg-[#0f0f0f]" />
+        {/* Subtle texture overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 0% 0%, rgba(255,255,255,0.06), transparent 50%),
+              radial-gradient(circle at 100% 100%, rgba(214,175,104,0.12), transparent 50%),
+              radial-gradient(circle at 1px 1px, rgba(255,255,255,0.08) 1px, transparent 0)
+            `,
+            backgroundSize: '900px 900px, 700px 700px, 20px 20px',
+            opacity: 1,
+          }}
+        />
+
+        <div className="relative z-10 container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-cabernet">Did You Know this about Pittsburgh Rentals?</h2>
-            <p className="text-center text-charcoal-light max-w-3xl mx-auto mt-4 text-lg">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-white drop-shadow-lg">Did You Know this about Pittsburgh Rentals?</h2>
+            <p className="text-center text-white/80 max-w-3xl mx-auto mt-4 text-lg">
               Why Pittsburgh's rental market offers exceptional opportunities for steady income and long-term appreciation.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {rentalData.map((item, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow duration-300">
+              <div key={index} className={statCardClass}>
+                {/* Gold accent bar */}
+                <span className="absolute inset-x-8 top-0 h-[3px] rounded-b-full bg-gradient-to-r from-transparent via-[#d6af68] to-transparent opacity-85 pointer-events-none" />
+
                 {/* Statistic */}
-                <div className="text-3xl md:text-4xl font-bold text-cabernet mb-2">
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-md">
                   {item.statistic}
                 </div>
                 
                 {/* Category */}
-                <div className="text-lg font-semibold text-charcoal mb-3">
+                <div className="text-sm font-semibold text-white uppercase tracking-[0.18em] mb-3">
                   {item.category}
                 </div>
                 
                 {/* Description */}
-                <div className="text-sm text-charcoal-light mb-4 leading-relaxed">
+                <div className="text-sm text-white/85 mb-4 leading-relaxed">
                   {item.description}
                 </div>
                 
                 {/* Source Link */}
                 <div className="text-xs">
-                  <span className="text-gray-500">Source: </span>
+                  <span className="text-white/60">Source: </span>
                   <a 
                     href={item.sourceUrl} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-cabernet hover:text-cabernet/90 underline font-medium"
+                    className="text-[#d6af68] hover:text-[#e8c77b] underline font-medium transition-colors"
                   >
                     {item.source}
                   </a>
@@ -138,35 +161,56 @@ export const RentalListings: React.FC = () => {
       </section>
 
       {/* Rental Properties Section */}
-      <section id="rental-properties" className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-cabernet mb-4">Rental Investment Opportunities</h2>
-            <p className="text-charcoal-light max-w-3xl mx-auto text-lg leading-relaxed">
+      <section id="rental-properties" className="py-16 bg-white">
+        <div className="container mx-auto px-3 sm:px-4 md:px-6">
+          <div
+            className="bg-white/95 backdrop-blur-sm border border-accent/20 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl"
+            style={{
+              filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.066)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.044))',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.056), 0 0 60px rgba(0, 0, 0, 0.034), inset 0 0 20px rgba(255, 255, 255, 0.088), 0 4px 20px rgba(0, 0, 0, 0.044)',
+            }}
+          >
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-center text-primary mb-3">Rental Investment Opportunities</h2>
+            <p className="text-center text-charcoal-light max-w-3xl mx-auto mb-4 text-base leading-relaxed">
               With <span className="font-bold text-gold">8.5% rental yields</span> and only 4.2% vacancy rates, 
               these rental properties offer exceptional cash flow potential in Pittsburgh's growing market.
             </p>
-          </div>
 
-          {properties.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {properties.map((property) => (
-                <div key={property.id} className="transform transition-transform hover:scale-[1.02]">
-                  <PropertyCard listing={property} onOpenQuickView={setQuickViewListing} />
-                </div>
-              ))}
+            {/* Disclosure banner */}
+            <div className="w-full bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-900 shadow-sm mb-6">
+              <p className="font-semibold mb-1">Live listings coming soon</p>
+              <p>
+                Current properties are sample data while the IDX/MLS feed is finalized. Feel free to browse the experience,
+                reach out to Nicole for real inventory, or explore the rest of the site in the meantime.
+              </p>
             </div>
-          ) : (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
+
+            {properties.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {properties.map((property) => (
+                  <div 
+                    key={property.id} 
+                    className="transform transition-all duration-300 hover:scale-[1.03] h-full relative overflow-visible"
+                    style={{
+                      filter: 'drop-shadow(0 6px 20px rgba(0, 0, 0, 0.15)) drop-shadow(0 3px 10px rgba(0, 0, 0, 0.1))',
+                    }}
+                  >
+                    <PropertyCard listing={property} onOpenQuickView={setQuickViewListing} />
+                  </div>
+                ))}
               </div>
-              <h3 className="text-xl font-semibold text-charcoal mb-2">No Rental Properties Available</h3>
-              <p className="text-charcoal-light">Check back soon for new rental opportunities in Pittsburgh.</p>
-            </div>
-          )}
+            ) : (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-charcoal mb-2">No Rental Properties Available</h3>
+                <p className="text-charcoal-light">Check back soon for new rental opportunities in Pittsburgh.</p>
+              </div>
+            )}
+          </div>
         </div>
       </section>
       

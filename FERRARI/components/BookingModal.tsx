@@ -14,6 +14,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, sou
     appointmentTime: ''
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [consent, setConsent] = useState({
+    privacy: false,
+    email: false,
+    sms: false,
+    marketing: false,
+  });
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -33,6 +39,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, sou
         preferredContactTime: formData.appointmentTime,
         message: `${source} consultation booking request. Contact via ${formData.contactPreference}.`,
         source: source,
+        consent: {
+          acknowledgedPolicies: consent.privacy,
+          email: consent.email,
+          sms: consent.sms,
+          marketing: consent.marketing,
+        },
         buyingStage: source === 'Invest' ? 'Investment Property Interest' : 'Finance/Mortgage Inquiry'
       };
 
@@ -62,10 +74,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, sou
         interest: source === 'Invest' ? 'Investment Consultation' as const : 'Finance Consultation' as const,
         status: 'New' as const,
         priority: 'High' as const,
-        notes: `Contact Preference: ${formData.contactPreference}\nContact Details: ${formData.contactDetails}\nAppointment Time: ${formData.appointmentTime}`,
+        notes: `Contact Preference: ${formData.contactPreference}\nContact Details: ${formData.contactDetails}\nAppointment Time: ${formData.appointmentTime}\nEmail Consent: ${consent.email ? 'Yes' : 'No'}\nSMS Consent: ${consent.sms ? 'Yes' : 'No'}\nMarketing Opt-In: ${consent.marketing ? 'Yes' : 'No'}`,
         noteTimeline: [{
           id: Date.now().toString(),
-          content: `New ${source.toLowerCase()} consultation booking request.\n\nContact Preference: ${formData.contactPreference}\nContact Details: ${formData.contactDetails}\nAppointment Time: ${formData.appointmentTime}`,
+          content: `New ${source.toLowerCase()} consultation booking request.\n\nContact Preference: ${formData.contactPreference}\nContact Details: ${formData.contactDetails}\nAppointment Time: ${formData.appointmentTime}\nEmail Consent: ${consent.email ? 'Yes' : 'No'}\nSMS Consent: ${consent.sms ? 'Yes' : 'No'}`,
           createdAt: new Date().toISOString(),
           author: 'System',
           type: 'General' as const,
@@ -96,6 +108,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, sou
         appointmentTime: ''
       });
       setStatus('idle');
+      setConsent({
+        privacy: false,
+        email: false,
+        sms: false,
+        marketing: false,
+      });
     }
   }, [isOpen]);
 
@@ -106,6 +124,18 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, sou
     // Basic validation
     if (!formData.name.trim() || !formData.contactDetails.trim() || !formData.appointmentTime.trim()) {
       alert('Please fill in all required fields.');
+      return;
+    }
+    if (!consent.privacy) {
+      alert('Please acknowledge the Privacy Policy, Terms of Use, and Cookie Policy.');
+      return;
+    }
+    if (formData.contactPreference === 'email' && !consent.email) {
+      alert('Please consent to email communications so we can respond.');
+      return;
+    }
+    if ((formData.contactPreference === 'phone' || formData.contactPreference === 'text') && !consent.sms) {
+      alert('Please consent to phone/SMS communications so we can reach you.');
       return;
     }
 
@@ -231,6 +261,59 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, sou
               <p className="text-sm">There was an error sending your request. Please try again.</p>
             </div>
           )}
+
+          {/* Consent Section */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
+            <p className="text-sm font-semibold text-gray-700">Communication Consent</p>
+            <label className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                className="mt-1"
+                checked={consent.privacy}
+                onChange={(e) => setConsent(prev => ({ ...prev, privacy: e.target.checked }))}
+                required
+              />
+              <span className="text-sm text-gray-700">
+                I have read and agree to the <a href="/privacy" className="underline text-primary">Privacy Policy</a>,{' '}
+                <a href="/terms" className="underline text-primary">Terms of Use</a>, and <a href="/cookies" className="underline text-primary">Cookie Policy</a>.
+              </span>
+            </label>
+            <label className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                className="mt-1"
+                checked={consent.email}
+                onChange={(e) => setConsent(prev => ({ ...prev, email: e.target.checked }))}
+                required={formData.contactPreference === 'email'}
+              />
+              <span className="text-sm text-gray-700">
+                I consent to email communications. I can unsubscribe at any time.
+              </span>
+            </label>
+            <label className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                className="mt-1"
+                checked={consent.sms}
+                onChange={(e) => setConsent(prev => ({ ...prev, sms: e.target.checked }))}
+                required={formData.contactPreference === 'phone' || formData.contactPreference === 'text'}
+              />
+              <span className="text-sm text-gray-700">
+                I consent to phone/SMS communications (message/data rates may apply). Reply STOP to opt out.
+              </span>
+            </label>
+            <label className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                className="mt-1"
+                checked={consent.marketing}
+                onChange={(e) => setConsent(prev => ({ ...prev, marketing: e.target.checked }))}
+              />
+              <span className="text-sm text-gray-700">
+                Send me market updates and educational resources (optional).
+              </span>
+            </label>
+          </div>
 
           {/* Submit Button */}
           <button

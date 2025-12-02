@@ -21,6 +21,12 @@ export const ContactLeadModal: React.FC<ContactLeadModalProps> = ({ isOpen, onCl
     signedAt: ''
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [consent, setConsent] = useState({
+    privacy: false,
+    email: false,
+    sms: false,
+    marketing: false,
+  });
   const agreementRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (field: string, value: string) => {
@@ -42,6 +48,12 @@ export const ContactLeadModal: React.FC<ContactLeadModalProps> = ({ isOpen, onCl
         preferredContactTime: formData.appointmentTime,
         message: `Free consultation request. Contact via ${formData.contactPreference}.${agreementData.signLater ? ' (Listing Agreement - Will sign later)' : ' (Listing Agreement Signed)'}`,
         source: 'Contact Form',
+        consent: {
+          acknowledgedPolicies: consent.privacy,
+          email: consent.email,
+          sms: consent.sms,
+          marketing: consent.marketing,
+        },
         listingAgreement: {
           signed: !agreementData.signLater,
           signature: agreementData.signature,
@@ -76,10 +88,10 @@ export const ContactLeadModal: React.FC<ContactLeadModalProps> = ({ isOpen, onCl
         interest: 'Free Consultation' as const,
         status: 'New' as const,
         priority: 'High' as const,
-        notes: `Contact Preference: ${formData.contactPreference}\nContact Details: ${formData.contactDetails}\nBuying Process: ${formData.buyingProcess}\nAppointment Time: ${formData.appointmentTime}\nListing Agreement: ${agreementData.signLater ? 'Will sign later' : 'Signed'}`,
+        notes: `Contact Preference: ${formData.contactPreference}\nContact Details: ${formData.contactDetails}\nBuying Process: ${formData.buyingProcess}\nAppointment Time: ${formData.appointmentTime}\nListing Agreement: ${agreementData.signLater ? 'Will sign later' : 'Signed'}\nEmail Consent: ${consent.email ? 'Yes' : 'No'}\nSMS Consent: ${consent.sms ? 'Yes' : 'No'}\nMarketing Opt-In: ${consent.marketing ? 'Yes' : 'No'}`,
         noteTimeline: [{
           id: Date.now().toString(),
-          content: `New consultation request from contact form.\n\nContact Preference: ${formData.contactPreference}\nContact Details: ${formData.contactDetails}\nBuying Process: ${formData.buyingProcess}\nAppointment Time: ${formData.appointmentTime}\nListing Agreement: ${agreementData.signLater ? 'Will sign later' : `Signed by ${agreementData.signature} at ${agreementData.signedAt}`}`,
+          content: `New consultation request from contact form.\n\nContact Preference: ${formData.contactPreference}\nContact Details: ${formData.contactDetails}\nBuying Process: ${formData.buyingProcess}\nAppointment Time: ${formData.appointmentTime}\nListing Agreement: ${agreementData.signLater ? 'Will sign later' : `Signed by ${agreementData.signature} at ${agreementData.signedAt}`}\nEmail Consent: ${consent.email ? 'Yes' : 'No'}\nSMS Consent: ${consent.sms ? 'Yes' : 'No'}`,
           createdAt: new Date().toISOString(),
           author: 'System',
           type: 'General' as const,
@@ -118,6 +130,12 @@ export const ContactLeadModal: React.FC<ContactLeadModalProps> = ({ isOpen, onCl
         signedAt: ''
       });
       setStatus('idle');
+      setConsent({
+        privacy: false,
+        email: false,
+        sms: false,
+        marketing: false,
+      });
     }
   }, [isOpen]);
 
@@ -127,6 +145,18 @@ export const ContactLeadModal: React.FC<ContactLeadModalProps> = ({ isOpen, onCl
     // Basic validation for step 1
     if (!formData.name.trim() || !formData.contactDetails.trim() || !formData.buyingProcess.trim() || !formData.appointmentTime.trim()) {
       alert('Please fill in all required fields.');
+      return;
+    }
+    if (!consent.privacy) {
+      alert('Please acknowledge the Privacy Policy, Terms of Use, and Cookie Policy.');
+      return;
+    }
+    if (formData.contactPreference === 'email' && !consent.email) {
+      alert('Please consent to email communications so we can respond via email.');
+      return;
+    }
+    if ((formData.contactPreference === 'phone' || formData.contactPreference === 'text') && !consent.sms) {
+      alert('Please consent to phone/SMS communications so we can respond via your selected method.');
       return;
     }
 
@@ -296,6 +326,59 @@ export const ContactLeadModal: React.FC<ContactLeadModalProps> = ({ isOpen, onCl
             </select>
           </div>
 
+          {/* Consent Section */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
+            <p className="text-sm font-semibold text-gray-700">Communication Consent</p>
+            <label className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                className="mt-1"
+                checked={consent.privacy}
+                onChange={(e) => setConsent(prev => ({ ...prev, privacy: e.target.checked }))}
+                required
+              />
+              <span className="text-sm text-gray-700">
+                I have read and agree to the <a href="/privacy" className="underline text-primary">Privacy Policy</a>,{' '}
+                <a href="/terms" className="underline text-primary">Terms of Use</a>, and <a href="/cookies" className="underline text-primary">Cookie Policy</a>.
+              </span>
+            </label>
+            <label className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                className="mt-1"
+                checked={consent.email}
+                onChange={(e) => setConsent(prev => ({ ...prev, email: e.target.checked }))}
+                required={formData.contactPreference === 'email'}
+              />
+              <span className="text-sm text-gray-700">
+                I consent to email communications about my inquiry. I can unsubscribe at any time.
+              </span>
+            </label>
+            <label className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                className="mt-1"
+                checked={consent.sms}
+                onChange={(e) => setConsent(prev => ({ ...prev, sms: e.target.checked }))}
+                required={formData.contactPreference === 'phone' || formData.contactPreference === 'text'}
+              />
+              <span className="text-sm text-gray-700">
+                I consent to phone/SMS communications (message/data rates may apply). Reply STOP to opt out.
+              </span>
+            </label>
+            <label className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                className="mt-1"
+                checked={consent.marketing}
+                onChange={(e) => setConsent(prev => ({ ...prev, marketing: e.target.checked }))}
+              />
+              <span className="text-sm text-gray-700">
+                Keep me informed about market updates and occasional promotions (optional).
+              </span>
+            </label>
+          </div>
+
           {/* Next Button for Step 1 */}
           <button
             type="submit"
@@ -323,7 +406,7 @@ export const ContactLeadModal: React.FC<ContactLeadModalProps> = ({ isOpen, onCl
               </div>
 
               <p className="text-gray-700">
-                <strong>And</strong> Nicole M. Staack, licensed real estate agent with eXp Realty ("Agent").
+                <strong>And</strong> Nicole M. Staack, licensed Realtor with eXp Realty ("Agent").
               </p>
 
               <h5 className="font-semibold text-gray-900 mt-4">1. LISTING PERIOD</h5>

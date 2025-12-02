@@ -5,7 +5,12 @@ import { Footer } from './components/Footer';
 import { TabbedContent } from './components/TabbedContent';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
+import CookiePolicy from './components/CookiePolicy';
+import Accessibility from './components/Accessibility';
+import FairHousing from './components/FairHousing';
+import DMCA from './components/DMCA';
 import AIChatAgent from './components/AIChatAgent';
+import CookieConsentBanner from './components/CookieConsentBanner';
 import { AdminPortal } from './components/AdminPortal';
 import { FEATURED_LISTINGS, INVESTOR_LISTINGS } from './constants';
 import { Listing } from './types';
@@ -31,24 +36,41 @@ function App() {
     return <AdminPortal />;
   }
 
-  return (
-    <div className="bg-white">
-      <Header />
-      <main>
-        {/* Simple route-like render based on location pathname */}
-        {typeof window !== 'undefined' && (window.location.pathname === '/privacy') ? (
-          <Privacy />
-        ) : typeof window !== 'undefined' && (window.location.pathname === '/terms') ? (
-          <Terms />
-        ) : (
+  const path = typeof window !== 'undefined' ? window.location.pathname : '/';
+
+  const renderContent = () => {
+    switch (path) {
+      case '/privacy':
+        return <Privacy />;
+      case '/terms':
+        return <Terms />;
+      case '/cookies':
+        return <CookiePolicy />;
+      case '/accessibility':
+        return <Accessibility />;
+      case '/fair-housing':
+        return <FairHousing />;
+      case '/dmca':
+        return <DMCA />;
+      default:
+        return (
           <>
             <TabbedContent />
             <ExpRealty />
           </>
-        )}
+        );
+    }
+  };
+
+  return (
+    <div className="bg-white">
+      <Header />
+      <main>
+        {renderContent()}
       </main>
       <Footer />
       <AIChatAgent />
+      <CookieConsentBanner />
     </div>
   );
 }

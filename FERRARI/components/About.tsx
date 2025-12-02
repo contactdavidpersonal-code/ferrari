@@ -9,7 +9,7 @@ export const About: React.FC = () => {
           <div className="md:w-1/2">
             <img 
               src="https://picsum.photos/seed/realtor/600/600" 
-              alt="Real estate agent Jane Doe" 
+              alt="Realtor Jane Doe" 
               className="rounded-lg shadow-2xl w-full max-w-md mx-auto"
             />
           </div>

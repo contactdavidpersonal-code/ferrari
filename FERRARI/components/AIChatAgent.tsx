@@ -14,6 +14,8 @@ import {
   ACCURACY_DISCLAIMER,
   PRIVACY_NOTE,
   LIABILITY_NOTICE,
+  FAIR_HOUSING_NOTE,
+  MLS_DATA_NOTICE,
   BROKERAGE_NAME,
   BROKER_PHONE,
   BROKER_CITY_STATE,
@@ -441,10 +443,17 @@ const AIChatAgent: React.FC = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 bg-primary text-white rounded-lg px-4 py-3 shadow-lg hover:bg-primary/90 transition-colors duration-300 z-50 font-semibold text-sm sm:text-base"
+          className="fixed bottom-6 right-6 flex items-center gap-3 bg-white text-primary rounded-full pl-4 pr-5 py-2 shadow-xl border border-primary/30 hover:shadow-2xl transition-all duration-300 z-50 overflow-visible"
           aria-label="Open chat"
         >
-          Agent Support
+          <div className="relative shrink-0" style={{ width: '3.5rem', height: '3.5rem' }}>
+            <img
+              src="/nicole_waving_transparent.png"
+              alt="Nicole waving avatar"
+              className="absolute -top-12 left-1/2 -translate-x-1/2 w-36 h-36 object-contain drop-shadow-[0_12px_18px_rgba(0,0,0,0.25)]"
+            />
+          </div>
+          <span className="font-semibold text-base leading-tight pr-1">Need Help?</span>
         </button>
       )}
 
@@ -452,10 +461,17 @@ const AIChatAgent: React.FC = () => {
       {isOpen && (
         <div className="fixed bottom-6 right-6 w-[420px] h-[620px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 flex flex-col">
           {/* Chat Header */}
-          <div className="bg-cabernet text-white px-5 py-5 rounded-t-lg flex justify-between items-center">
-            <div>
-              <h3 className="font-semibold">{CHAT_HEADER_TITLE}</h3>
-              <p className="text-sm opacity-90">{CHAT_HEADER_SUBTITLE}</p>
+          <div className="bg-cabernet text-white px-5 py-5 rounded-t-lg flex justify-between items-center gap-4">
+            <div className="flex items-center gap-3">
+              <img
+                src="/nicole_animated.png"
+                alt="Nicole's assistant avatar"
+                className="w-12 h-12 rounded-full border border-white/40 object-cover shadow-lg"
+              />
+              <div>
+                <h3 className="font-semibold">{CHAT_HEADER_TITLE}</h3>
+                <p className="text-sm opacity-90">{CHAT_HEADER_SUBTITLE}</p>
+              </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
@@ -519,6 +535,8 @@ const AIChatAgent: React.FC = () => {
                 <div>{ACCURACY_DISCLAIMER}</div>
                 <div>{PRIVACY_NOTE}</div>
                 <div>{LIABILITY_NOTICE}</div>
+                <div>{FAIR_HOUSING_NOTE}</div>
+                <div>{MLS_DATA_NOTICE}</div>
                 <div>
                   Brokerage: <span className="font-semibold">{BROKERAGE_NAME}</span> • {BROKER_CITY_STATE} • Main: {BROKER_PHONE} • License: {LICENSE_JURISDICTION}
                 </div>

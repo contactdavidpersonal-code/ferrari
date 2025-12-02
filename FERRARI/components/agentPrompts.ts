@@ -36,6 +36,8 @@ export const COMPLIANCE_SHORT = 'Information here is general only. No legal, tax
 export const ACCURACY_DISCLAIMER = 'Responses may be incomplete, inaccurate, or outdated. Market data and availability change frequently.';
 export const PRIVACY_NOTE = 'This assistant runs locally for privacy. Conversations are not sent to external cloud services.';
 export const LIABILITY_NOTICE = 'By using this assistant, you agree we are not liable for losses arising from reliance on its responses.';
+export const FAIR_HOUSING_NOTE = 'Equal Housing Opportunity — we serve clients without regard to race, color, religion, sex, handicap, familial status, national origin, or any protected class.';
+export const MLS_DATA_NOTICE = 'MLS data deemed reliable but not guaranteed. Courtesy of West Penn Multi-List & participating brokers.';
 
 // Refusal messages
 export const NO_LICENSED_ACTIVITY_MESSAGE =

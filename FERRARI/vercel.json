@@ -1,24 +1,7 @@
 {
-  "buildCommand": "npm ci && npm run build",
-  "outputDirectory": "dist",
-  "installCommand": "npm ci",
-  "framework": "vite",
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PATCH,DELETE,OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, x-import-admin-token" }
-      ]
-    }
-  ],
-  "rewrites": [
-    { "source": "/nms-admin", "destination": "/" },
-    { "source": "/privacy", "destination": "/" },
-    { "source": "/terms", "destination": "/" },
-    { "source": "/((?!api/).*)", "destination": "/" }
-  ]
+  "buildCommand": "cd FERRARI && npm ci && npm run build",
+  "outputDirectory": "FERRARI/dist",
+  "installCommand": "cd FERRARI && npm ci",
+  "framework": "vite"
 }
-
 

@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
           <nav className="hidden sm:flex items-center flex-shrink-0">
             <button 
               onClick={() => setIsLeadOpen(true)} 
-              className="bg-gradient-to-r from-primary to-primary-light text-white py-2 sm:py-2.5 md:py-3 px-4 sm:px-5 md:px-6 hover:from-accent hover:to-accent-light hover:text-primary transition-all duration-300 font-bold text-sm sm:text-base md:text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 border border-accent/20 rounded-lg sm:rounded-xl min-h-[44px]"
+              className="inline-flex items-center justify-center bg-gradient-to-r from-[#d6af68] via-[#c69750] to-[#a87632] text-primary font-semibold tracking-wide rounded-full px-6 sm:px-7 md:px-8 py-2.5 sm:py-3 shadow-[0_18px_45px_rgba(0,0,0,0.35)] hover:scale-[1.03] hover:shadow-[0_25px_55px_rgba(0,0,0,0.4)] transition-all duration-300 border border-white/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#d6af68]/70 focus-visible:ring-offset-transparent text-base md:text-lg"
             >
               Contact
             </button>

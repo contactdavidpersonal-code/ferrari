@@ -1,7 +1,0 @@
-{
-  "buildCommand": "cd FERRARI && npm ci && npm run build",
-  "outputDirectory": "FERRARI/dist",
-  "installCommand": "cd FERRARI && npm ci",
-  "framework": "vite"
-}
-
