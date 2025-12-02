@@ -188,8 +188,8 @@ export const HottestProperties: React.FC = () => {
           >
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-center text-primary mb-3">Properties Attracting the Most Attention</h2>
             <p className="text-center text-charcoal-light max-w-3xl mx-auto mb-4 text-base">
-              These prime commercial properties and development land are currently generating the most interest from savvy investors and developers. Explore them before they're gone.
-            </p>
+            These prime commercial properties and development land are currently generating the most interest from savvy investors and developers. Explore them before they're gone.
+          </p>
 
             {/* Disclosure banner */}
             <div className="w-full bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-900 shadow-sm mb-6">
@@ -201,7 +201,7 @@ export const HottestProperties: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-              {properties.map((listing) => (
+                  {properties.map((listing) => (
                 <div 
                   key={listing.id} 
                   className="transform transition-all duration-300 hover:scale-[1.03] h-full relative overflow-visible"
@@ -209,12 +209,12 @@ export const HottestProperties: React.FC = () => {
                     filter: 'drop-shadow(0 6px 20px rgba(0, 0, 0, 0.15)) drop-shadow(0 3px 10px rgba(0, 0, 0, 0.1))',
                   }}
                 >
-                  <PropertyCard 
-                    listing={listing} 
-                    onOpenQuickView={handleOpenQuickView}
-                  />
+                    <PropertyCard 
+                      listing={listing} 
+                      onOpenQuickView={handleOpenQuickView}
+                    />
                 </div>
-              ))}
+                  ))}
             </div>
           </div>
         </div>

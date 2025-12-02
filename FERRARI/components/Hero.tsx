@@ -113,26 +113,26 @@ export const Hero: React.FC<HeroProps> = () => {
       <div className="relative z-10 flex-1 flex flex-col pt-[70px] sm:pt-[80px] md:pt-[90px] pb-6 sm:pb-8 md:pb-10">
         <div className="container mx-auto px-3 sm:px-4 md:px-6 flex-1 flex flex-col justify-center">
           <div className="max-w-5xl mx-auto text-center w-full space-y-3.5 sm:space-y-4 md:space-y-5">
-            {/* Main Headline - 3 lines with PLACE as center line */}
+          {/* Main Headline - 3 lines with PLACE as center line */}
             <h1
               className="font-serif font-bold text-white leading-tight px-2 drop-shadow-lg tracking-[0.01em] hero-fade-up"
               style={{ fontSize: 'clamp(2.4rem, 7vw, 5.75rem)', animationDelay: '0.05s' }}
             >
               <span className="block text-sm tracking-[0.3em] uppercase font-sans font-semibold text-white/70 mb-2 sm:mb-3">
-                Everyone needs a
+            Everyone needs a
               </span>
               <span className="block mt-0.5 sm:mt-1 tracking-[0.08em]">PLACE</span>
               <span className="block mt-0.5 sm:mt-1 tracking-[0.02em]">in Pittsburgh</span>
-            </h1>
-            
-            {/* Subheadline - Fluid typography with clamp, smaller */}
+          </h1>
+          
+          {/* Subheadline - Fluid typography with clamp, smaller */}
             <p
               className="text-white/90 leading-relaxed mx-auto drop-shadow-md font-light hero-fade-up"
               style={{ fontSize: 'clamp(0.85rem, 2.2vw, 1.2rem)', maxWidth: '42rem', animationDelay: '0.15s' }}
             >
               Find your perfect Pittsburgh property with expert guidance from Nicole Marie Severson,
               your trusted eXp Realty advisor for discerning buyers, sellers, and investors across the city.
-            </p>
+          </p>
 
             <div className="flex flex-col items-center gap-2.5 sm:gap-3 hero-fade-up" style={{ animationDelay: '0.25s' }}>
               <button
@@ -153,7 +153,7 @@ export const Hero: React.FC<HeroProps> = () => {
             style={{ animationDelay: '0.35s' }}
           >
             {QUICK_ACTIONS.map((action) => (
-              <button
+            <button
                 key={action.key}
                 onClick={() => handleQuickAction(action)}
                 className={`${quickActionCardClass} py-4 sm:py-5 md:py-6`}
@@ -162,21 +162,21 @@ export const Hero: React.FC<HeroProps> = () => {
                 <div className="flex flex-col items-center text-center gap-2">
                   <div className={`${quickActionIconClass} group-hover:scale-105 transition-transform`}>
                     <span>{action.icon}</span>
-                  </div>
+              </div>
                   <div
                     className="font-semibold text-white uppercase tracking-[0.2em]"
                     style={{ fontSize: 'clamp(0.7rem, 1.4vw, 0.9rem)' }}
                   >
                     {action.label}
-                  </div>
+              </div>
                   <div
                     className="text-white/85 leading-tight px-1 text-xs sm:text-sm font-medium"
                     style={{ fontSize: 'clamp(0.62rem, 1.2vw, 0.8rem)', lineHeight: '1.35' }}
                   >
                     {action.meta}
-                  </div>
-                </div>
-              </button>
+              </div>
+              </div>
+            </button>
             ))}
           </div>
         </div>
