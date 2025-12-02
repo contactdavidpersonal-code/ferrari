@@ -68,10 +68,13 @@ export const TabbedContent: React.FC = () => {
   return (
     <div>
       {/* Hero Section */}
-      <Hero onOpenContact={() => setIsLeadOpen(true)} />
+      <div className="relative">
+        <Hero onOpenContact={() => setIsLeadOpen(true)} />
+      </div>
 
-      <div 
-        className="relative bg-gradient-to-b from-white/95 via-white/90 to-white/85 backdrop-blur-2xl pt-4 sm:pt-5 md:pt-6 pb-4 sm:pb-5 md:pb-6 sticky top-0 z-30 border-b border-accent/30 rounded-b-2xl sm:rounded-b-3xl overflow-hidden"
+      {/* Navigation Section */}
+      <section 
+        className="sticky-nav bg-gradient-to-b from-white/95 via-white/90 to-white/85 backdrop-blur-2xl py-4 sm:py-5 md:py-6 z-30 border-t border-b border-accent/30 shadow-lg"
         style={{
           filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.12)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1))',
           boxShadow: '0 0 40px rgba(0, 0, 0, 0.1), 0 0 80px rgba(0, 0, 0, 0.06), inset 0 0 30px rgba(255, 255, 255, 0.3), 0 4px 25px rgba(0, 0, 0, 0.08)',
@@ -124,8 +127,9 @@ export const TabbedContent: React.FC = () => {
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
+      {/* Content Sections */}
       <div>
         {activeTab === 'commercial' && (
           <>

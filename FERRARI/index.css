@@ -271,3 +271,23 @@ p, h1, h2, h3, h4, h5, h6 {
     opacity: 1;
   }
 }
+
+/* Sticky navigation with responsive top positioning */
+.sticky-nav {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+@media (min-width: 640px) {
+  .sticky-nav {
+    top: 90px;
+  }
+}
+
+@media (min-width: 768px) {
+  .sticky-nav {
+    top: 100px;
+  }
+}

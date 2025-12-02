@@ -379,7 +379,7 @@ Be enthusiastic about Pittsburgh's market and Nicole's expertise.`
   return (
     <section data-section="custom-search" className="w-full min-h-screen">
       {/* AI Chat Section with onyx background */}
-      <div className="relative pt-16 pb-12 overflow-hidden">
+      <div className="relative pt-0 pb-12 overflow-hidden">
         {/* Onyx black background */}
         <div className="absolute inset-0 bg-[#0f0f0f]" />
         {/* Subtle texture overlay */}

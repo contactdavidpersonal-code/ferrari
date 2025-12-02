@@ -137,7 +137,7 @@ export const ResidentialListings: React.FC = () => {
     return (
         <>
             {/* Residential Statistics Section */}
-            <section id="residential-stats" className="relative pt-32 pb-20 overflow-hidden">
+            <section id="residential-stats" className="relative pt-0 pb-20 overflow-hidden">
                 {/* Onyx black background */}
                 <div className="absolute inset-0 bg-[#0f0f0f]" />
                 {/* Subtle texture overlay */}
@@ -154,7 +154,7 @@ export const ResidentialListings: React.FC = () => {
                   }}
                 />
 
-                <div className="relative z-10 container mx-auto px-6">
+                <div className="relative z-10 container mx-auto px-6 pt-12 sm:pt-16 md:pt-20">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-serif font-bold text-white drop-shadow-lg">Did You Know this about Pittsburgh Residential?</h2>
                         <p className="text-center text-white/80 max-w-3xl mx-auto mt-4 text-lg">

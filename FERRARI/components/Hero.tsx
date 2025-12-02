@@ -80,7 +80,7 @@ export const Hero: React.FC<HeroProps> = () => {
   };
 
   return (
-    <section className="relative bg-white h-screen overflow-hidden flex flex-col">
+    <section className="relative bg-white min-h-screen overflow-hidden flex flex-col">
       {/* Pittsburgh background image - more visible for depth */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.65]"
@@ -110,7 +110,7 @@ export const Hero: React.FC<HeroProps> = () => {
       />
       
       {/* Main Content Area - Compact spacing to fit all elements */}
-      <div className="relative z-10 flex-1 flex flex-col pt-[70px] sm:pt-[80px] md:pt-[90px] pb-6 sm:pb-8 md:pb-10">
+      <div className="relative z-10 flex-1 flex flex-col pt-[70px] sm:pt-[80px] md:pt-[90px] pb-16 sm:pb-24 md:pb-28">
         <div className="container mx-auto px-3 sm:px-4 md:px-6 flex-1 flex flex-col justify-center">
           <div className="max-w-5xl mx-auto text-center w-full space-y-3.5 sm:space-y-4 md:space-y-5">
           {/* Main Headline - 3 lines with PLACE as center line */}
@@ -182,7 +182,7 @@ export const Hero: React.FC<HeroProps> = () => {
         </div>
         
         {/* Scroll indicator */}
-        <div className="mt-4 hero-fade-up" style={{ animationDelay: '0.45s' }}>
+        <div className="mt-6 sm:mt-8 md:mt-10 mb-4 sm:mb-6 md:mb-8 hero-fade-up" style={{ animationDelay: '0.45s' }}>
           <div className="flex justify-center">
             <button
               onClick={scrollToProperties}
