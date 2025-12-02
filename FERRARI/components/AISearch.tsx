@@ -410,7 +410,7 @@ Be enthusiastic about Pittsburgh's market and Nicole's expertise.`
             className="relative bg-white/95 backdrop-blur-sm border border-accent/30 rounded-2xl sm:rounded-3xl overflow-hidden max-w-4xl mx-auto"
             style={{
               filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.088)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.066))',
-              boxShadow: '0 0 30px rgba(0, 0, 0, 0.066), 0 0 60px rgba(0, 0, 0, 0.044), inset 0 0 20px rgba(255, 255, 255, 0.111), 0 4px 20px rgba(0, 0, 0, 0.056)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.066), 0 0 60px rgba(0, 0, 0, 0.044), inset 0 0 20px rgba(255, 255, 255, 0.111), 0 4px 20px rgba(0, 0, 0, 0.056), 0 0 0 1px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.15)',
             }}
           >
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent animate-pulse opacity-80"></div>

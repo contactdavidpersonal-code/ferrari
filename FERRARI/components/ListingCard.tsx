@@ -785,7 +785,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ listing, onOpenQuick
             <span className="text-charcoal/40" style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)' }}>🏠</span>
           </div>
         )}
-        <span className="absolute top-2 sm:top-3 md:top-4 left-2 sm:left-3 md:left-4 bg-cream text-primary font-semibold px-2 sm:px-2.5 md:px-3 py-0.5 sm:py-1 uppercase tracking-[0.12em] border border-charcoal/10" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.75rem)' }}>{listing.type}</span>
+        <span className="absolute top-2 sm:top-3 md:top-4 left-2 sm:left-3 md:left-4 bg-cream text-primary font-semibold pl-5 sm:pl-6 md:pl-8 pr-6 sm:pr-8 md:pr-10 py-0.5 sm:py-1 uppercase tracking-[0.12em] border border-charcoal/10" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.75rem)' }}>{listing.type}</span>
         {listing.images && Array.isArray(listing.images) && listing.images.length > 1 && (
           <span className="pointer-events-none select-none absolute top-2 sm:top-3 right-2 sm:right-3 bg-white/90 text-charcoal font-medium px-1.5 sm:px-2 py-0.5 sm:py-1 border border-charcoal/10" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.75rem)' }}>
             +{listing.images.length - 1} more
