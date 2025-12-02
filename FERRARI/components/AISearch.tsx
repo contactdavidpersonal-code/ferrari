@@ -396,7 +396,7 @@ Be enthusiastic about Pittsburgh's market and Nicole's expertise.`
           }}
         />
 
-        <div className="relative z-10 max-w-[98%] xl:max-w-[99%] mx-auto px-2 sm:px-3 md:px-4 lg:px-6">
+        <div className="relative z-10 max-w-[98%] xl:max-w-[99%] mx-auto px-2 sm:px-3 md:px-4 lg:px-6 pt-12 sm:pt-16 md:pt-20">
           {/* Section Header */}
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-white drop-shadow-lg mb-3">AI-Powered Property Search</h2>
